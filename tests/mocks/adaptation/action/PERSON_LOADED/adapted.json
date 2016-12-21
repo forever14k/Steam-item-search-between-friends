@@ -1,0 +1,372 @@
+{
+    "type": "PERSON_LOADED",
+    "person": {
+        "steamId32": "44336602",
+        "steamId64": "76561198004602330",
+        "state": "PERSON_LOADED",
+        "status": "STATUS_INGAME"
+    },
+    "backpack": {
+        "assets": [{
+            "appid": "570",
+            "contextid": "2",
+            "assetid": "665167765",
+            "classid": "170676678",
+            "instanceid": "253068381",
+            "amount": "1",
+            "id": "665167765"
+        }, {
+            "appid": "570",
+            "contextid": "2",
+            "assetid": "689207720",
+            "classid": "172726297",
+            "instanceid": "93973071",
+            "amount": "1",
+            "id": "689207720"
+        }],
+        "descriptions": [{
+            "appid": "570",
+            "classid": "170676678",
+            "instanceid": "253068381",
+            "currency": 0,
+            "background_color": "",
+            "icon_url": "W_I_5GLm4wPcv9jJQ7z7tz_l_0sEIYUhRfbF4arNQkgGQGKd3kMuVo47AQVZrh2GeU6UxPhCZOaLTFduH82tRRW-Zvjcnk-lAtYeKoM2aT4a3tjhj08bUSnSULAdCNUq7J7dklTumGgTRB8",
+            "icon_url_large": "W_I_5GLm4wPcv9jJQ7z7tz_l_0sEIYUhRfbF4arNQkgGQGKd3kMuVo47AQVZrh2GeU6UxPhCZOaLPQI4CJ_6CBK4Yq_dxEyiWIERf9I9YWtJi4260kgRB3DSVuUcW9Eqvc_A1w2_CAWPOWxqdPj45v4",
+            "descriptions": [{
+                "type": "html",
+                "value": "For those who came before and sang the word, gathering friends as they began their crusade, the light of gratitude swirls within the stone."
+            }, {
+                "type": "html",
+                "value": "( Not Tradable or Usable in Crafting )"
+            }, {
+                "type": "html",
+                "value": "<div style=\"white-space: nowrap; margin: 10px\"><div style=\"white-space: nowrap; padding: 3px;\"><div style=\"width: 60px; height: 32px; vertical-align: top; display: inline-block;\"><div style=\"position: relative; width: 48px; height: 32px; vertical-align: top; display: inline-block; border: 2px solid rgb(255, 255, 255);\"><div style=\"position: absolute; width: 48px; height: 32px; vertical-align: top; display: inline-block; background-size: contain; background-image: url(http://cdn.dota2.com/apps/570/icons/econ/tools/bloodstone1.97e52c1c2518fd9f907301cb19969585e69051a4.png)\"></div></div></div><div style=\"vertical-align: top; display: inline-block; margin-left: 12px padding: 2px\"><span style=\"font-size: 18px; white-space: normal; color: rgb(255, 255, 255)\">Gifts Granted: 0</span><br><span style=\"font-size: 12px\">Bloodstone of the Ancestor</span></div></div></div>"
+            }],
+            "tradable": 0,
+            "name": "Bloodstone of the Ancestor",
+            "name_color": "D2D2D2",
+            "type": "Rare Relic of Prestige",
+            "market_name": "Bloodstone of the Ancestor",
+            "market_hash_name": "Bloodstone of the Ancestor",
+            "commodity": 0,
+            "market_tradable_restriction": 7,
+            "market_marketable_restriction": 7,
+            "marketable": 0,
+            "tags": [{
+                "category": "Quality",
+                "internal_name": "unique",
+                "localized_category_name": "Quality",
+                "localized_tag_name": "Standard",
+                "color": "D2D2D2",
+                "name": "Standard",
+                "category_name": "Quality"
+            }, {
+                "category": "Rarity",
+                "internal_name": "Rarity_Rare",
+                "localized_category_name": "Rarity",
+                "localized_tag_name": "Rare",
+                "color": "4b69ff",
+                "name": "Rare",
+                "category_name": "Rarity"
+            }, {
+                "category": "Type",
+                "internal_name": "socket_gem",
+                "localized_category_name": "Type",
+                "localized_tag_name": "Gem / Rune",
+                "name": "Gem / Rune",
+                "category_name": "Type"
+            }, {
+                "category": "Slot",
+                "internal_name": "none",
+                "localized_category_name": "Slot",
+                "localized_tag_name": "N/A",
+                "name": "N/A",
+                "category_name": "Slot"
+            }, {
+                "category": "Hero",
+                "internal_name": "DOTA_OtherType",
+                "localized_category_name": "Hero",
+                "localized_tag_name": "Other",
+                "name": "Other",
+                "category_name": "Hero"
+            }]
+        }, {
+            "appid": "570",
+            "classid": "172726297",
+            "instanceid": "93973071",
+            "currency": 0,
+            "background_color": "",
+            "icon_url": "W_I_5GLm4wPcv9jJQ7z7tz_l_0sEIYUhRfbF4arNQkgGQGKd3kMuVpMgCwRZrgyEf1GVxaNKf-3JDgc3HZ3teVa0MqGIiU60VcNLc9piPH0mzoC-2hwMXHeCB75BAIMvvJPB1Vu8WweXezo4yY1Tgvadg5eBU6SBrhqzIlV51fopU8ul-rzrAw",
+            "icon_url_large": "W_I_5GLm4wPcv9jJQ7z7tz_l_0sEIYUhRfbF4arNQkgGQGKd3kMuVpMgCwRZrgyEf1GVxaNKf-3JDgc3HZ3teVa0MqGIiU60VcNLc9piPH0mzoC-2hx9CHCVUuMKXoEjuJ_C1F_sCQeWfWQ0ztkHgaDIg8eBXabVoRrkd1FzgexgWZ8XmQYRPGTtNR6rCQ",
+            "descriptions": [{
+                "type": "html",
+                "value": "Used By: Sniper"
+            }, {
+                "type": "html",
+                "value": " "
+            }, {
+                "type": "html",
+                "value": "Gunslinger",
+                "color": "9da1a9"
+            }, {
+                "type": "html",
+                "value": "Gunslinger's Rifle",
+                "color": "6c7075"
+            }, {
+                "type": "html",
+                "value": "Gunslinger's Bracers",
+                "color": "6c7075"
+            }, {
+                "type": "html",
+                "value": "Gunslinger's Hat",
+                "color": "6c7075"
+            }, {
+                "type": "html",
+                "value": "Gunslinger's Cape",
+                "color": "6c7075"
+            }, {
+                "type": "html",
+                "value": "For the highland Keens, it is a matter of honor that each shootist construct his own weapon.  Thus a good shot is the product of both a sharp eye, and a keen mind for gun design."
+            }, {
+                "type": "html",
+                "value": " "
+            }, {
+                "type": "html",
+                "value": "( Not Tradable or Usable in Crafting )"
+            }],
+            "tradable": 0,
+            "name": "Gunslinger's Rifle",
+            "name_color": "D2D2D2",
+            "type": "Common Rifle",
+            "market_name": "Gunslinger's Rifle",
+            "market_hash_name": "Gunslinger's Rifle",
+            "commodity": 0,
+            "market_tradable_restriction": 7,
+            "market_marketable_restriction": 7,
+            "marketable": 0,
+            "tags": [{
+                "category": "Quality",
+                "internal_name": "unique",
+                "localized_category_name": "Quality",
+                "localized_tag_name": "Standard",
+                "color": "D2D2D2",
+                "name": "Standard",
+                "category_name": "Quality"
+            }, {
+                "category": "Rarity",
+                "internal_name": "Rarity_Common",
+                "localized_category_name": "Rarity",
+                "localized_tag_name": "Common",
+                "color": "b0c3d9",
+                "name": "Common",
+                "category_name": "Rarity"
+            }, {
+                "category": "Type",
+                "internal_name": "wearable",
+                "localized_category_name": "Type",
+                "localized_tag_name": "Wearable",
+                "name": "Wearable",
+                "category_name": "Type"
+            }, {
+                "category": "Slot",
+                "internal_name": "weapon",
+                "localized_category_name": "Slot",
+                "localized_tag_name": "Weapon",
+                "name": "Weapon",
+                "category_name": "Slot"
+            }, {
+                "category": "Hero",
+                "internal_name": "npc_dota_hero_sniper",
+                "localized_category_name": "Hero",
+                "localized_tag_name": "Sniper",
+                "name": "Sniper",
+                "category_name": "Hero"
+            }]
+        }],
+        "total_inventory_count": 2,
+        "success": true,
+        "rwgrsn": -2,
+        "rgInventory": {
+            "665167765": {
+                "appid": "570",
+                "contextid": "2",
+                "assetid": "665167765",
+                "classid": "170676678",
+                "instanceid": "253068381",
+                "amount": "1",
+                "id": "665167765"
+            },
+            "689207720": {
+                "appid": "570",
+                "contextid": "2",
+                "assetid": "689207720",
+                "classid": "172726297",
+                "instanceid": "93973071",
+                "amount": "1",
+                "id": "689207720"
+            }
+        },
+        "rgDescriptions": {
+            "170676678_253068381": {
+                "appid": "570",
+                "classid": "170676678",
+                "instanceid": "253068381",
+                "currency": 0,
+                "background_color": "",
+                "icon_url": "W_I_5GLm4wPcv9jJQ7z7tz_l_0sEIYUhRfbF4arNQkgGQGKd3kMuVo47AQVZrh2GeU6UxPhCZOaLTFduH82tRRW-Zvjcnk-lAtYeKoM2aT4a3tjhj08bUSnSULAdCNUq7J7dklTumGgTRB8",
+                "icon_url_large": "W_I_5GLm4wPcv9jJQ7z7tz_l_0sEIYUhRfbF4arNQkgGQGKd3kMuVo47AQVZrh2GeU6UxPhCZOaLPQI4CJ_6CBK4Yq_dxEyiWIERf9I9YWtJi4260kgRB3DSVuUcW9Eqvc_A1w2_CAWPOWxqdPj45v4",
+                "descriptions": [{
+                    "type": "html",
+                    "value": "For those who came before and sang the word, gathering friends as they began their crusade, the light of gratitude swirls within the stone."
+                }, {
+                    "type": "html",
+                    "value": "( Not Tradable or Usable in Crafting )"
+                }, {
+                    "type": "html",
+                    "value": "<div style=\"white-space: nowrap; margin: 10px\"><div style=\"white-space: nowrap; padding: 3px;\"><div style=\"width: 60px; height: 32px; vertical-align: top; display: inline-block;\"><div style=\"position: relative; width: 48px; height: 32px; vertical-align: top; display: inline-block; border: 2px solid rgb(255, 255, 255);\"><div style=\"position: absolute; width: 48px; height: 32px; vertical-align: top; display: inline-block; background-size: contain; background-image: url(http://cdn.dota2.com/apps/570/icons/econ/tools/bloodstone1.97e52c1c2518fd9f907301cb19969585e69051a4.png)\"></div></div></div><div style=\"vertical-align: top; display: inline-block; margin-left: 12px padding: 2px\"><span style=\"font-size: 18px; white-space: normal; color: rgb(255, 255, 255)\">Gifts Granted: 0</span><br><span style=\"font-size: 12px\">Bloodstone of the Ancestor</span></div></div></div>"
+                }],
+                "tradable": 0,
+                "name": "Bloodstone of the Ancestor",
+                "name_color": "D2D2D2",
+                "type": "Rare Relic of Prestige",
+                "market_name": "Bloodstone of the Ancestor",
+                "market_hash_name": "Bloodstone of the Ancestor",
+                "commodity": 0,
+                "market_tradable_restriction": 7,
+                "market_marketable_restriction": 7,
+                "marketable": 0,
+                "tags": [{
+                    "category": "Quality",
+                    "internal_name": "unique",
+                    "localized_category_name": "Quality",
+                    "localized_tag_name": "Standard",
+                    "color": "D2D2D2",
+                    "name": "Standard",
+                    "category_name": "Quality"
+                }, {
+                    "category": "Rarity",
+                    "internal_name": "Rarity_Rare",
+                    "localized_category_name": "Rarity",
+                    "localized_tag_name": "Rare",
+                    "color": "4b69ff",
+                    "name": "Rare",
+                    "category_name": "Rarity"
+                }, {
+                    "category": "Type",
+                    "internal_name": "socket_gem",
+                    "localized_category_name": "Type",
+                    "localized_tag_name": "Gem / Rune",
+                    "name": "Gem / Rune",
+                    "category_name": "Type"
+                }, {
+                    "category": "Slot",
+                    "internal_name": "none",
+                    "localized_category_name": "Slot",
+                    "localized_tag_name": "N/A",
+                    "name": "N/A",
+                    "category_name": "Slot"
+                }, {
+                    "category": "Hero",
+                    "internal_name": "DOTA_OtherType",
+                    "localized_category_name": "Hero",
+                    "localized_tag_name": "Other",
+                    "name": "Other",
+                    "category_name": "Hero"
+                }]
+            },
+            "172726297_93973071": {
+                "appid": "570",
+                "classid": "172726297",
+                "instanceid": "93973071",
+                "currency": 0,
+                "background_color": "",
+                "icon_url": "W_I_5GLm4wPcv9jJQ7z7tz_l_0sEIYUhRfbF4arNQkgGQGKd3kMuVpMgCwRZrgyEf1GVxaNKf-3JDgc3HZ3teVa0MqGIiU60VcNLc9piPH0mzoC-2hwMXHeCB75BAIMvvJPB1Vu8WweXezo4yY1Tgvadg5eBU6SBrhqzIlV51fopU8ul-rzrAw",
+                "icon_url_large": "W_I_5GLm4wPcv9jJQ7z7tz_l_0sEIYUhRfbF4arNQkgGQGKd3kMuVpMgCwRZrgyEf1GVxaNKf-3JDgc3HZ3teVa0MqGIiU60VcNLc9piPH0mzoC-2hx9CHCVUuMKXoEjuJ_C1F_sCQeWfWQ0ztkHgaDIg8eBXabVoRrkd1FzgexgWZ8XmQYRPGTtNR6rCQ",
+                "descriptions": [{
+                    "type": "html",
+                    "value": "Used By: Sniper"
+                }, {
+                    "type": "html",
+                    "value": " "
+                }, {
+                    "type": "html",
+                    "value": "Gunslinger",
+                    "color": "9da1a9"
+                }, {
+                    "type": "html",
+                    "value": "Gunslinger's Rifle",
+                    "color": "6c7075"
+                }, {
+                    "type": "html",
+                    "value": "Gunslinger's Bracers",
+                    "color": "6c7075"
+                }, {
+                    "type": "html",
+                    "value": "Gunslinger's Hat",
+                    "color": "6c7075"
+                }, {
+                    "type": "html",
+                    "value": "Gunslinger's Cape",
+                    "color": "6c7075"
+                }, {
+                    "type": "html",
+                    "value": "For the highland Keens, it is a matter of honor that each shootist construct his own weapon.  Thus a good shot is the product of both a sharp eye, and a keen mind for gun design."
+                }, {
+                    "type": "html",
+                    "value": " "
+                }, {
+                    "type": "html",
+                    "value": "( Not Tradable or Usable in Crafting )"
+                }],
+                "tradable": 0,
+                "name": "Gunslinger's Rifle",
+                "name_color": "D2D2D2",
+                "type": "Common Rifle",
+                "market_name": "Gunslinger's Rifle",
+                "market_hash_name": "Gunslinger's Rifle",
+                "commodity": 0,
+                "market_tradable_restriction": 7,
+                "market_marketable_restriction": 7,
+                "marketable": 0,
+                "tags": [{
+                    "category": "Quality",
+                    "internal_name": "unique",
+                    "localized_category_name": "Quality",
+                    "localized_tag_name": "Standard",
+                    "color": "D2D2D2",
+                    "name": "Standard",
+                    "category_name": "Quality"
+                }, {
+                    "category": "Rarity",
+                    "internal_name": "Rarity_Common",
+                    "localized_category_name": "Rarity",
+                    "localized_tag_name": "Common",
+                    "color": "b0c3d9",
+                    "name": "Common",
+                    "category_name": "Rarity"
+                }, {
+                    "category": "Type",
+                    "internal_name": "wearable",
+                    "localized_category_name": "Type",
+                    "localized_tag_name": "Wearable",
+                    "name": "Wearable",
+                    "category_name": "Type"
+                }, {
+                    "category": "Slot",
+                    "internal_name": "weapon",
+                    "localized_category_name": "Slot",
+                    "localized_tag_name": "Weapon",
+                    "name": "Weapon",
+                    "category_name": "Slot"
+                }, {
+                    "category": "Hero",
+                    "internal_name": "npc_dota_hero_sniper",
+                    "localized_category_name": "Hero",
+                    "localized_tag_name": "Sniper",
+                    "name": "Sniper",
+                    "category_name": "Hero"
+                }]
+            }
+        }
+    }
+}

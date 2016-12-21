@@ -2,7 +2,7 @@ class AdaptationReducer
 
   initialState: true
 
-  adapt: ( action ) ->
+  adapt: ( state, action ) ->
     if action?.backpack?.assets? and action?.backpack?.descriptions?
       backpack = action.backpack
 
@@ -21,10 +21,12 @@ class AdaptationReducer
           tag.category_name = tag.localized_category_name if tag?.localized_category_name?
         backpack.rgDescriptions[ "#{description.classid}_#{description.instanceid}" ] = description
 
+    return state
+
   reducer: ( state = @initialState, action ) ->
     switch action.type
       when PERSON_LOADED
-        @adapt action
+        @adapt state, action
     return state
 
   constructor: () ->

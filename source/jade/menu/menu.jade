@@ -15,7 +15,7 @@ mixin inputContextid( inputDisabled )
 
 .sisbf_render--diff
   .gray_bevel.for_text_input
-    input#sisbf_text(size='40', name='search_string', placeholder='Enter name of items you searching', value=Settings.search)
+    input.sisbf_render--oneway#sisbf_text(size='40', name='search_string', placeholder='Enter name of items you searching', value=Settings.search)
   case Persons.state
     when PERSONSCLUB_IDLE
       +inputAppid( false )

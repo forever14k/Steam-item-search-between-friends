@@ -1,3 +1,7 @@
+1.3.1 / 2016-12-21
+==================
+- Fixed search text replaced when inventories load too fast.
+
 1.3.0 / 2016-12-19
 ==================
 - Change Steam inventory end point.
