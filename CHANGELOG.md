@@ -1,3 +1,7 @@
+1.3.2 / 2017-01-03
+==================
+- Fixed persons selector for authed steam users.
+
 1.3.1 / 2016-12-21
 ==================
 - Fixed search text replaced when inventories load too fast.

@@ -1,6 +1,6 @@
 {
   "name": "Steam-item-search-between-friends",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "description": "This extension allows to find items you looking for in all friends inventories on the same time.",
   "main": "build/js/app.js",
   "scripts": {
