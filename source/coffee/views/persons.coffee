@@ -1,6 +1,6 @@
 class PersonsView extends BaseView
 
-  el: '#memberList [data-miniprofile]'
+  el: '.profile_friends [data-miniprofile]'
 
   onStateChange: () ->
     state = @state.getState().Persons.state
