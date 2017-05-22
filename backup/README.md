@@ -26,4 +26,28 @@ In my opinion, Steam trading system lack of such a functionality.
 
 Now you can open your Steam friends page (e.g. https://steamcommunity.com/my/friends) and start using extension.
 
+## **How to:** Install local copy (using Chrome).
+1. Install [Node.js](https://nodejs.org)
+2. Install [CoffeeScript](http://coffeescript.org/) and [Grunt](http://gruntjs.com/)
+```
+npm install -g coffee-script
+npm install -g grunt-cli
+```
+3. Install Steam item search between friends
+```
+git clone git@github.com:forever14k/Steam-item-search-between-friends.git
+cd Steam-item-search-between-friends
+npm install
+```
+4. Build Steam item search between friends extension
+```
+grunt build
+```
+5. Open [Chrome extensions page](chrome://extensions/)
+6. Tick Developer mode checkbox
+7. Click Load unpacked extension...
+8. Select Steam-item-search-between-friends/build directory, and click OK
+
+Now you can open your Steam friends page (e.g. https://steamcommunity.com/my/friends) and start using extension.
+
 # [Changelog](/CHANGELOG.md)

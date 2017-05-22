@@ -1,9 +1,3 @@
-1.4.0 / 2017-XX-XX
-==================
-- React
-- TypeScript
-
-
 1.3.2 / 2017-01-03
 ==================
 - Fixed persons selector for authed steam users.
