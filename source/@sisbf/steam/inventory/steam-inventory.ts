@@ -64,3 +64,9 @@ export enum SteamInventoryItemMarketable {
     NOT_MARKETABLE,
     MARKETABLE,
 }
+
+export enum SteamInventoryTagCategory {
+    CATEGORY = 'Category',
+    QUALITY = 'Quality',
+    RARITY = 'Rarity',
+}
