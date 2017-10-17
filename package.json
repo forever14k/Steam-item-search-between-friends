@@ -11,6 +11,7 @@
   "license": "ISC",
   "homepage": "https://github.com/forever14k/Steam-item-search-between-friends/",
   "devDependencies": {
+    "@types/big.js": "4.0.0",
     "@types/chrome": "0.0.46",
     "@types/core-js": "0.9.41",
     "@types/react": "15.0.24",
@@ -23,7 +24,7 @@
     "webpack": "2.6.0"
   },
   "dependencies": {
-    "biginteger": "1.0.3",
+    "big.js": "5.0.2",
     "core-js": "2.4.1",
     "react": "15.5.4",
     "react-redux": "5.0.5",
