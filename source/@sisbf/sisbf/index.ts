@@ -1,4 +1,7 @@
 export interface SisbfItem {
+    id: string;
+    name: string;
+
     tags: SisbfItemTag[];
 }
 
