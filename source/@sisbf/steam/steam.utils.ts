@@ -1,4 +1,4 @@
-import Big = require('big.js');
+import { Big } from 'big.js';
 import { SteamInventoryV1, SteamInventoryV2, SteamInventoryBaseAsset, SteamInventoryBaseDescription } from './inventory';
 
 
@@ -18,10 +18,11 @@ export function toSteamInventoryV1(inventoryV2: SteamInventoryV2): SteamInventor
         success: Boolean(inventoryV2.success),
         rgInventory: inventoryV2.assets
             .reduce(
-                (rgInventory, asset) => {
+                (rgInventory: SteamInventoryV1['rgInventory'], asset) => {
                     rgInventory[asset.assetid] = {
                         ...asset,
                         id: asset.assetid,
+                        appid: String(asset.appid),
                     };
                     return rgInventory;
                 },
@@ -29,7 +30,7 @@ export function toSteamInventoryV1(inventoryV2: SteamInventoryV2): SteamInventor
             ),
         rgDescriptions: inventoryV2.descriptions
             .reduce(
-                (rgDescriptions, description) => {
+                (rgDescriptions: SteamInventoryV1['rgDescriptions'], description) => {
                     rgDescriptions[getSteamInventoryV1DescriptionId(description)] = {
                         ...description,
                         tags: description.tags
