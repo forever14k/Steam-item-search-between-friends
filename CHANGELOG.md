@@ -1,3 +1,7 @@
+1.3.4 / 2018-01-11
+==================
+- Adjust Steam request per minute limit. Now its 30, was 150.
+
 1.3.3 / 2018-01-09
 ==================
 - Change title and description as requested by chrome web store dev. support.
@@ -13,7 +17,7 @@
 1.3.0 / 2016-12-19
 ==================
 - Change Steam inventory end point.
-- Adust Steam request per minute limit. Now its 150, was 2.
+- Adjust Steam request per minute limit. Now its 150, was 2.
 - Minor fixes, such as gems regexes.
 
 1.2.2 / 2016-12-15
