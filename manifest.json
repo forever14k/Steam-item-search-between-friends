@@ -1,6 +1,6 @@
 {
-  "name": "Steam item search between friends.",
-  "version": "1.3.2",
+  "name": "Search items between steam friends.",
+  "version": "1.3.3",
   "content_scripts": [
     {
       "css": [
