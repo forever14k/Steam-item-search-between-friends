@@ -1,3 +1,7 @@
+1.3.3 / 2018-01-09
+==================
+- Change title and description as requested by chrome web store dev. support.
+
 1.3.2 / 2017-01-03
 ==================
 - Fixed persons selector for authed steam users.
