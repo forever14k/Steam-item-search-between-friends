@@ -1,7 +1,7 @@
 class FiltersView extends BaseView
 
   el: '#sisbf_filters .sisbf_container .sisbf_filters'
-  elAppendTo: '.maincontent'
+  elAppendTo: '#friends_list'
 
   onStateChange: () ->
     @update()
