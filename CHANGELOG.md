@@ -1,3 +1,7 @@
+1.3.5 / 2018-06-13
+==================
+- Quick fix for new Steam friends UI
+
 1.3.4 / 2018-01-11
 ==================
 - Adjust Steam request per minute limit. Now its 30, was 150.

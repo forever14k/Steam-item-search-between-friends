@@ -1,7 +1,7 @@
 class BackpacksView extends BaseView
 
   el: '#sisbf_backpacks .sisbf_container .sisbf_backpacks'
-  elAppendTo: '.maincontent'
+  elAppendTo: '#friends_list'
 
   _el:
     users: '.sisbf_backpacks-user'
