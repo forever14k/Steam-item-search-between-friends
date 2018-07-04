@@ -1,3 +1,7 @@
+1.3.6 / 2018-07-05
+==================
+- Enable extension on blocked and following friends page
+
 1.3.5 / 2018-06-13
 ==================
 - Quick fix for new Steam friends UI

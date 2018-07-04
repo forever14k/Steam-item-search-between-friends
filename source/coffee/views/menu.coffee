@@ -1,7 +1,7 @@
 class MenuView extends BaseView
 
   el: '#sisbf_menu .sisbf_container .sisbf_menu'
-  elAppendTo: '#friends_list'
+  elAppendTo: '.friends_content'
 
   _el:
     load: '#sisbf_load'
@@ -62,6 +62,17 @@ class MenuView extends BaseView
       type: SEARCH_CHANGED
       search: search
 
+  reset: () ->
+    @$el.remove()
+
+    if @shouldInitiate()
+      @append()
+      @render()
+      @updateSelectors()
+
+      @state.dispatch
+        type: SETTINGS_CHANGED
+
   append: () ->
     $( @elAppendTo ).prepend sisbf.menu_container @state.getState()
     @updateSelectors()
@@ -72,9 +83,11 @@ class MenuView extends BaseView
     @delegateEvents()
 
   update: () ->
-    render.diff @$el, sisbf.menu_menu( @state.getState() )
+    if @$el.length isnt 0
+      render.diff @$el, sisbf.menu_menu( @state.getState() )
 
   constructor: () ->
     super
-    @append()
-    @render()
+    if @shouldInitiate()
+      @append()
+      @render()

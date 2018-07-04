@@ -18,8 +18,18 @@ class BaseView
     $ window
       .on 'message', @onWindowMessage.bind @
 
+  onWindowMessage: ( event ) ->
+    if event?.originalEvent?.data?.PageControllerInstrumentLinks? and @reset
+      @reset()
+
   onStateChange: _.noop
-  onWindowMessage: _.noop
+
+  shouldInitiate: () ->
+    path = location.pathname.split('/')
+    lastItem = path.pop();
+    if lastItem is ''
+      return path.pop() is 'friends'
+    return lastItem is 'friends' or lastItem is 'blocked' or lastItem is 'following'
 
   updateSelectors: () ->
     @$el = $ @el

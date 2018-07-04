@@ -1,7 +1,7 @@
 class BackpacksView extends BaseView
 
   el: '#sisbf_backpacks .sisbf_container .sisbf_backpacks'
-  elAppendTo: '#friends_list'
+  elAppendTo: '.friends_content'
 
   _el:
     users: '.sisbf_backpacks-user'
@@ -21,6 +21,14 @@ class BackpacksView extends BaseView
       .clone()
       .appendTo $user
 
+  reset: () ->
+    @$el.remove()
+
+    if @shouldInitiate()
+      @append()
+      @render()
+      @updateSelectors()
+
   update: () ->
     @updateSelectors()
     _.each @$_el.users, @addSteamProfile.bind @
@@ -37,5 +45,6 @@ class BackpacksView extends BaseView
 
   constructor: () ->
     super
-    @append()
-    @render()
+    if @shouldInitiate()
+      @append()
+      @render()

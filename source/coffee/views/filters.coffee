@@ -1,7 +1,7 @@
 class FiltersView extends BaseView
 
   el: '#sisbf_filters .sisbf_container .sisbf_filters'
-  elAppendTo: '#friends_list'
+  elAppendTo: '.friends_content'
 
   onStateChange: () ->
     @update()
@@ -86,6 +86,13 @@ class FiltersView extends BaseView
   onFormatSelection: ( item ) ->
     return sisbf.filters_selection item
 
+  reset: () ->
+    @$el.remove()
+
+    if @shouldInitiate()
+      @append()
+      @updateSelectors()
+
   append: () ->
     $( @elAppendTo ).prepend sisbf.filters_container @state.getState()
     @updateSelectors()
@@ -131,4 +138,5 @@ class FiltersView extends BaseView
 
   constructor: () ->
     super
-    @append()
+    if @shouldInitiate()
+      @append()

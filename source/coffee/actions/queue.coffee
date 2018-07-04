@@ -2,6 +2,7 @@ class Queue extends BaseView
 
   state: null
   queue: null
+  request: null
   delay: ( ( 1000 * 60 ) / QUEUE_RPM)
   worker: 1
 
@@ -59,15 +60,15 @@ class Queue extends BaseView
   process: ( person ) ->
     state = @state.getState().Settings
 
-    request = $.ajax
+    @request = $.ajax
       method: 'GET'
       url: "//steamcommunity.com/inventory/#{person.steamId64}/#{state.appid}/#{state.contextid}?l=english&count=5000"
       dataType: 'json'
       success: @onLoaded.bind @
       error: @onError.bind @
-    request.person = person
+    @request.person = person
 
-    @onLoading request
+    @onLoading @request
 
   setup: () ->
     @queue = async.queue ( ( person, callback )=>
@@ -93,6 +94,15 @@ class Queue extends BaseView
   pause: () ->
     @queue.pause()
 
+  reset: () ->
+    if @request
+      @request.abort()
+    if @queue
+      @queue.drain = _.noop
+      @queue._tasks.empty()
+    @setup()
+
   constructor: () ->
     super
-    @setup()
+    if @shouldInitiate()
+      @setup()

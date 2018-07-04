@@ -1,6 +1,6 @@
 {
   "name": "Search items between steam friends.",
-  "version": "1.3.5",
+  "version": "1.3.6",
   "content_scripts": [
     {
       "css": [
@@ -11,7 +11,9 @@
       ],
       "matches": [
         "http://steamcommunity.com/*/friends*",
-        "https://steamcommunity.com/*/friends*"
+        "https://steamcommunity.com/*/friends*",
+        "http://steamcommunity.com/*/following*",
+        "https://steamcommunity.com/*/following*"
       ]
     }
   ],
