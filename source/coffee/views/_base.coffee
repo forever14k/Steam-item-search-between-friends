@@ -26,9 +26,8 @@ class BaseView
 
   shouldInitiate: () ->
     path = location.pathname.split('/')
-    lastItem = path.pop();
-    if lastItem is ''
-      return path.pop() is 'friends'
+    lastItem = path.pop()
+    lastItem = path.pop() if lastItem is ''
     return lastItem is 'friends' or lastItem is 'blocked' or lastItem is 'following'
 
   updateSelectors: () ->

@@ -1,3 +1,7 @@
+1.3.7 / 2018-07-07
+==================
+- Fix extension not working if slash at the end of path
+
 1.3.6 / 2018-07-05
 ==================
 - Enable extension on blocked and following friends page
