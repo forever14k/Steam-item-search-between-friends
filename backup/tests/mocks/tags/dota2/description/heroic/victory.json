@@ -1,5 +1,0 @@
-{
-    "descriptions": [{
-        "value": "<br><div id=\"tournament_info\" name=\"tournament_info\" title=\"Tournament Item Details\" style=\"border: 2px solid rgb(102, 102, 102); border-radius: 6px; width=100; margin:4px; padding:8px;\"><br><center><img width=100 height=60 src=\"http://cdn.dota2.com/apps/570//icons/econ/tournament_items/team_default_logo.png\"><span style=\"font-size:18px\"><b> vs. </b></span><img width=100 height=60 src=\"http://cdn.dota2.com/apps/570//icons/econ/tournament_items/team_default_logo.png\"></center><br><center><span style=\"font-size:18px\"><b>Victory</b></span></center><p><font color=#999999>Unknown Team defeated Unknown Team with a score of 3 to 0 on May 22, 2014 (11:00:22).</font></p><font color=#666666>MatchID: 674517469</font></div>"
-    }]
-}

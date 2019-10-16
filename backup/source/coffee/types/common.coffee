@@ -1,2 +1,0 @@
-REDUX_INIT = '@@redux/INIT'
-QUEUE_RPM = 150

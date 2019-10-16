@@ -1,9 +1,0 @@
-{
-    "type": "PERSON_ADD",
-    "person": {
-        "steamId32": "41208521",
-        "steamId64": "76561198001474249",
-        "state": "PERSON_IDLE",
-        "status": "STATUS_INGAME"
-    }
-}

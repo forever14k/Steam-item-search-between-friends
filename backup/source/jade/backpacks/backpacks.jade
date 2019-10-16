@@ -1,9 +1,0 @@
-each status in Backpacks.order
-  if Backpacks.results[ status ]
-    each items, steamId32 in Backpacks.results[ status ]
-      .sisbf_backpacks-backpack(data-steamid32=steamId32)
-        .sisbf_backpacks-user(data-steamid32=steamId32)
-        .sisbf_backpacks-items(data-steamid32=steamId32)
-          each item, itemId in items
-            a(href="//steamcommunity.com/profiles/#{item.person.steamId64}/inventory/##{Settings.appid}_#{Settings.contextid}_#{itemId}", target="_blank")
-              img(data-itemid=item.asset.itemId, data-descriptionid=item.asset.descriptionId, src="//steamcommunity-a.akamaihd.net/economy/image/#{item.description.icon_url}/73fx49f", style="border-color:##{item.asset.color};")

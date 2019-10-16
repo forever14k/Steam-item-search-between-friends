@@ -1,9 +1,0 @@
-[
-    ["Tradable", "Tradable", "ffffff"],
-    ["Tradable", "Tradable", null],
-    ["Tradable", "Not Tradable", null],
-    ["Marketable", "Marketable", null],
-    ["Name Changed", "Changed Name", null],
-    ["Description Changed", "Changed Description", null],
-    ["Description Changed", "Not Changed Description", null]
-]

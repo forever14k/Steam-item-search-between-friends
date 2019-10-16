@@ -1,6 +1,0 @@
-console.log "< Steam item search between friends >"
-console.log "\tCurrent Steam request per minute limit is < 150 >"
-console.log "\t10 friends\t ~ 4 seconds"
-console.log "\t100 friends\t ~ 40 seconds"
-console.log "\t200 friends\t ~ 1 minute 20 seconds"
-console.log "</ Steam item search between friends >"

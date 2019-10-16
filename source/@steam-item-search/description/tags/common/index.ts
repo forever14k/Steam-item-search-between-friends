@@ -1,1 +1,0 @@
-export * from './color-description-tag.middleware';

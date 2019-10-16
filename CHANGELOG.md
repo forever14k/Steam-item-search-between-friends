@@ -1,6 +1,6 @@
-1.4.0 / 2017-XX-XX
+2.0.0 / 2020-XX-XX
 ==================
-- React
+- Angular
 - TypeScript
 
 
