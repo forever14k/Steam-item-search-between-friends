@@ -5,6 +5,7 @@ import { ImmediateExecutor } from './immediate-executor';
 
 
 describe('ImmediateExecutor', () => {
+
     let executor: Executor;
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -32,4 +33,5 @@ describe('ImmediateExecutor', () => {
             expect(job.run).toHaveBeenCalledTimes(1);
         }
     });
+
 });
