@@ -182,7 +182,11 @@
         "template-banana-in-box": true,
         "template-no-negated-async": true,
         "use-lifecycle-interface": true,
-        "no-empty-interface": false
+        "no-empty-interface": false,
+        "object-literal-shorthand": [
+            true,
+            "never"
+        ]
     },
     "rulesDirectory": [
         "codelyzer"
