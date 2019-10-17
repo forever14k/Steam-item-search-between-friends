@@ -11,14 +11,14 @@ describe('SteamInventoryRequestExecutor', () => {
 
 
     it('should execute jobs in provided order',  fakeAsync(() => {
-        const RPM = 60;
-        const DELAY = (1000 * 60) / RPM;
+        const rpm = 60;
+        const delay = (1000 * 60) / rpm;
         TestBed.configureTestingModule({
             providers: [
                 {
                     provide: STEAM_INVENTORY_REQUEST_EXECUTOR_CONFIG,
                     useValue: {
-                        rpm: RPM,
+                        rpm: rpm,
                     } as SteamInventoryRequestExecutorConfig,
                 },
                 SteamInventoryRequestExecutor,
@@ -47,13 +47,13 @@ describe('SteamInventoryRequestExecutor', () => {
         expect(thirdJob.run).not.toHaveBeenCalled();
 
         firstSubscription.unsubscribe();
-        tick(DELAY);
+        tick(delay);
         expect(firstJob.run).toHaveBeenCalledTimes(1);
         expect(secondJob.run).toHaveBeenCalledTimes(1);
         expect(thirdJob.run).not.toHaveBeenCalled();
 
         secondSubscription.unsubscribe();
-        tick(DELAY);
+        tick(delay);
         expect(firstJob.run).toHaveBeenCalledTimes(1);
         expect(secondJob.run).toHaveBeenCalledTimes(1);
         expect(thirdJob.run).toHaveBeenCalledTimes(1);
@@ -61,14 +61,14 @@ describe('SteamInventoryRequestExecutor', () => {
 
 
     it('should execute jobs with delay between requests',  fakeAsync(() => {
-        const RPM = 60;
-        const HALF_DELAY = ((1000 * 60) / RPM) / 2;
+        const rpm = 60;
+        const halfDelay = ((1000 * 60) / rpm) / 2;
         TestBed.configureTestingModule({
             providers: [
                 {
                     provide: STEAM_INVENTORY_REQUEST_EXECUTOR_CONFIG,
                     useValue: {
-                        rpm: RPM,
+                        rpm: rpm,
                     } as SteamInventoryRequestExecutorConfig,
                 },
                 SteamInventoryRequestExecutor,
@@ -97,21 +97,21 @@ describe('SteamInventoryRequestExecutor', () => {
         expect(thirdJob.run).not.toHaveBeenCalled();
 
         firstSubscription.unsubscribe();
-        tick(HALF_DELAY);
+        tick(halfDelay);
         expect(firstJob.run).toHaveBeenCalledTimes(1);
         expect(secondJob.run).not.toHaveBeenCalled();
         expect(thirdJob.run).not.toHaveBeenCalled();
-        tick(HALF_DELAY);
+        tick(halfDelay);
         expect(firstJob.run).toHaveBeenCalledTimes(1);
         expect(secondJob.run).toHaveBeenCalledTimes(1);
         expect(thirdJob.run).not.toHaveBeenCalled();
 
         secondSubscription.unsubscribe();
-        tick(HALF_DELAY);
+        tick(halfDelay);
         expect(firstJob.run).toHaveBeenCalledTimes(1);
         expect(secondJob.run).toHaveBeenCalledTimes(1);
         expect(thirdJob.run).not.toHaveBeenCalled();
-        tick(HALF_DELAY);
+        tick(halfDelay);
         expect(firstJob.run).toHaveBeenCalledTimes(1);
         expect(secondJob.run).toHaveBeenCalledTimes(1);
         expect(thirdJob.run).toHaveBeenCalledTimes(1);
