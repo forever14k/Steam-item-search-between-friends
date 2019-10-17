@@ -1,8 +1,8 @@
+import { Subscription } from 'rxjs';
 import { async, TestBed } from '@angular/core/testing';
 
 import { Executor, Job } from './executor';
 import { SequentialExecutor } from './sequential-executor';
-import { Subscription } from 'rxjs';
 
 
 describe('SequentialExecutor', () => {
