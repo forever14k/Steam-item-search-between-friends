@@ -3,7 +3,7 @@ import { Inject, Injectable, InjectionToken, OnDestroy } from '@angular/core';
 import { SequentialExecutor } from './sequential-executor';
 
 
-const STEAM_INVENTORY_REQUEST_EXECUTOR_CONFIG =
+export const STEAM_INVENTORY_REQUEST_EXECUTOR_CONFIG =
     new InjectionToken<SteamInventoryRequestExecutorConfig>('SteamInventoryRequestExecutorConfig');
 
 export interface SteamInventoryRequestExecutorConfig {
