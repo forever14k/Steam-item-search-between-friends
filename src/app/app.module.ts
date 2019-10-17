@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { ImmediateExecutor } from 'sis';
 
 @NgModule({
     declarations: [
@@ -10,9 +9,6 @@ import { ImmediateExecutor } from 'sis';
     ],
     imports: [
         BrowserModule,
-    ],
-    providers: [
-        ImmediateExecutor,
     ],
     bootstrap: [ AppComponent ],
 })
