@@ -1,7 +1,7 @@
 import { toSteamId32, toSteamId64 } from './steam-id';
 
 
-describe('steam-id', () => {
+describe('steam id', () => {
 
     describe('toSteamId32', () => {
 

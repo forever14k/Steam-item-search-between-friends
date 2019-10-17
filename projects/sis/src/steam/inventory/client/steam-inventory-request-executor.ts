@@ -1,6 +1,6 @@
 import { Inject, Injectable, InjectionToken, OnDestroy } from '@angular/core';
 
-import { SequentialExecutor } from './sequential-executor';
+import { SequentialExecutor } from '../../../executor';
 
 
 export const STEAM_INVENTORY_REQUEST_EXECUTOR_CONFIG =

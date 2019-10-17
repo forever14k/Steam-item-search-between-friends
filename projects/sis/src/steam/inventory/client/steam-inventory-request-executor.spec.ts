@@ -1,7 +1,7 @@
 import { Subscription } from 'rxjs';
 import { fakeAsync, tick, TestBed } from '@angular/core/testing';
 
-import { Job } from './executor';
+import { Job } from '../../../executor';
 import {
     STEAM_INVENTORY_REQUEST_EXECUTOR_CONFIG, SteamInventoryRequestExecutor, SteamInventoryRequestExecutorConfig
 } from './steam-inventory-request-executor';
