@@ -3,3 +3,5 @@
     TODO: support other languages
  */
 export const LANGUAGE = 'english';
+
+export const STEAM_INVENTORY_API_PATH = 'inventory';

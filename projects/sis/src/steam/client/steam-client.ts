@@ -3,7 +3,7 @@ import { catchError, map, subscribeOn, switchMap } from 'rxjs/operators';
 import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 
-import { LANGUAGE } from '../config';
+import { LANGUAGE, STEAM_INVENTORY_API_PATH } from '../config';
 import { Executor, ExecutorScheduler } from '../../executor';
 import { SteamInventory, dedupeInventoryEntities } from '../inventory';
 import {
@@ -14,6 +14,7 @@ import {
 export const STEAM_CLIENT_CONFIG = new InjectionToken<SteamClientConfig>('SteamClientConfig');
 export interface SteamClientConfig {
     executor: Executor;
+    baseUrl?: string;
     inventory?: SteamClientInventoryConfig;
 }
 export interface SteamClientInventoryConfig {
@@ -21,6 +22,7 @@ export interface SteamClientInventoryConfig {
 }
 
 const DEFAULT_STEAM_CLIENT_CONFIG: Partial<SteamClientConfig> = {
+    baseUrl: '//steamcommunity.com',
     inventory: {
         itemsPerRequest: 5000,
     },
@@ -54,7 +56,7 @@ export class SteamClient {
 
     private fetchInventory(steamId64: string, appid: number, contextId: number,
                            itemsPerRequest: number, startAssetId?: string): Observable<SteamInventory> {
-        const url = `//steamcommunity.com/inventory/${steamId64}/${appid}/${contextId}`;
+        const url = `${this._config.baseUrl}/${STEAM_INVENTORY_API_PATH}/${steamId64}/${appid}/${contextId}`;
         let params = new HttpParams({
             fromObject: {
                 [STEAM_LANGUAGE_PARAM]: LANGUAGE,
