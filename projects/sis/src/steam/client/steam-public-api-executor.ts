@@ -1,25 +1,25 @@
 import { Inject, Injectable, InjectionToken, OnDestroy } from '@angular/core';
 
-import { SequentialExecutor } from '../../../executor';
+import { SequentialExecutor } from '../../executor';
 
 
-export const STEAM_INVENTORY_REQUEST_EXECUTOR_CONFIG =
-    new InjectionToken<SteamInventoryRequestExecutorConfig>('SteamInventoryRequestExecutorConfig');
+export const STEAM_PUBLIC_API_EXECUTOR_CONFIG =
+    new InjectionToken<SteamPublicAPIExecutorConfig>('SteamPublicAPIExecutorConfig');
 
-export interface SteamInventoryRequestExecutorConfig {
+export interface SteamPublicAPIExecutorConfig {
     // requests per minute
     rpm: number;
 }
 
 
 @Injectable()
-export class SteamInventoryRequestExecutor extends SequentialExecutor implements OnDestroy {
+export class SteamPublicAPIExecutor extends SequentialExecutor implements OnDestroy {
 
     private _delay: number;
     private _timer: ReturnType<typeof setTimeout>;
 
 
-    constructor(@Inject(STEAM_INVENTORY_REQUEST_EXECUTOR_CONFIG) config: SteamInventoryRequestExecutorConfig) {
+    constructor(@Inject(STEAM_PUBLIC_API_EXECUTOR_CONFIG) config: SteamPublicAPIExecutorConfig) {
         super();
         this._delay = getTimeBetweenRequests(config.rpm);
     }
