@@ -1,7 +1,7 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
-import { ImmediateExecutor } from '../../executor';
+import { Executor, ImmediateExecutor } from '../../executor';
 
 import {
     ClosedInventoryError, STEAM_CLIENT_CONFIG, SteamClient, SteamClientConfig, TooManyRequestsError,
@@ -40,6 +40,34 @@ describe('SteamClient', () => {
             const req = httpTestingController.expectOne((request: HttpRequest<any>) => request.url.startsWith(baseUrl));
             expect(req).toBeTruthy();
             httpTestingController.verify();
+        }));
+
+        it ('should execute jobs in provided executor', fakeAsync(() => {
+            const executor: Executor = {
+                execute: jasmine.createSpy('execute'),
+            };
+            TestBed.configureTestingModule({
+                imports: [HttpClientTestingModule],
+                providers: [
+                    {
+                        provide: STEAM_CLIENT_CONFIG,
+                        useValue: {
+                            executor: executor,
+                        } as SteamClientConfig,
+                    },
+                    SteamClient,
+                ],
+            });
+
+            const client = TestBed.get(SteamClient);
+
+            const callCount = 14;
+            for (let i = 0; i < callCount; i++) {
+                client.getInventory('0', 0, 0).subscribe();
+            }
+
+            tick();
+            expect(executor.execute).toHaveBeenCalledTimes(callCount);
         }));
 
         describe('inventory', () => {
