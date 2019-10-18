@@ -3,7 +3,7 @@ import { fakeAsync, tick, TestBed } from '@angular/core/testing';
 
 import { Job } from '../../executor';
 import {
-    STEAM_PUBLIC_API_EXECUTOR_CONFIG, SteamPublicAPIExecutor, SteamPublicAPIExecutorConfig
+    STEAM_PUBLIC_API_EXECUTOR_CONFIG, SteamPublicAPIExecutor, SteamPublicAPIExecutorConfig,
 } from './steam-public-api-executor';
 
 
