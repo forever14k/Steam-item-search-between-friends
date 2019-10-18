@@ -1,2 +1,3 @@
 export * from './inventory';
-export * from './client/public-api';
+export * from './inventory-id';
+export * from './inventory-dedupe';

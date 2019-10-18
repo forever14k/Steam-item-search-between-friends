@@ -1,7 +1,10 @@
 export interface SteamInventory {
     assets: SteamInventoryAsset[];
     descriptions: SteamInventoryDescription[];
-    success: number;
+    success: SteamInventoryBoolean;
+    more_items?: SteamInventoryBoolean;
+    total_inventory_count?: number;
+    last_assetid?: string;
 }
 
 export interface SteamInventoryAsset {
@@ -22,8 +25,8 @@ export interface SteamInventoryDescription {
     currency: number;
     commodity: number;
 
-    marketable: SteamInventoryItemMarketable;
-    tradable: SteamInventoryItemTradable;
+    marketable: SteamInventoryBoolean;
+    tradable: SteamInventoryBoolean;
 
     name_color: string;
     background_color: string;
@@ -65,14 +68,9 @@ export interface SteamInventoryTag {
     localized_tag_name: string;
 }
 
-export enum SteamInventoryItemTradable {
-    NOT_TRADABLE,
-    TRADABLE,
-}
-
-export enum SteamInventoryItemMarketable {
-    NOT_MARKETABLE,
-    MARKETABLE,
+export enum SteamInventoryBoolean {
+    FALSE,
+    TRUE,
 }
 
 export enum SteamInventoryTagCategory {
