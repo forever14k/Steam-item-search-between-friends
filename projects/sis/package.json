@@ -4,12 +4,7 @@
     "peerDependencies": {
         "@angular/core": "8.2.9",
         "@angular/common": "8.2.9",
-        "rxjs": "6.4.0"
-    },
-    "dependencies": {
+        "rxjs": "6.4.0",
         "big.js": "5.0.2"
-    },
-    "devDependencies": {
-        "@types/big.js": "4.0.0"
     }
 }
