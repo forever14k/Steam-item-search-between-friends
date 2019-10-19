@@ -21,7 +21,7 @@ export interface SteamClientInventoryConfig {
     itemsPerRequest?: number;
 }
 
-const DEFAULT_STEAM_CLIENT_CONFIG: Partial<SteamClientConfig> = {
+const STEAM_CLIENT_CONFIG_DEFAULTS: Partial<SteamClientConfig> = {
     baseUrl: '//steamcommunity.com',
     inventory: {
         itemsPerRequest: 5000,
@@ -38,10 +38,10 @@ export class SteamClient {
 
     constructor(private _http: HttpClient, @Inject(STEAM_CLIENT_CONFIG) config: SteamClientConfig) {
         this._config = {
-            ...DEFAULT_STEAM_CLIENT_CONFIG,
+            ...STEAM_CLIENT_CONFIG_DEFAULTS,
             ...config,
             inventory: {
-                ...DEFAULT_STEAM_CLIENT_CONFIG.inventory,
+                ...STEAM_CLIENT_CONFIG_DEFAULTS.inventory,
                 ...config && config.inventory ? config.inventory : {},
             },
         };
@@ -97,8 +97,8 @@ function mergeInventories(inventory: SteamInventory, nextInventory: SteamInvento
     return {
         ...inventory,
         ...nextInventory,
-        assets:       [ ...inventory.assets,       ...nextInventory.assets ],
-        descriptions: [ ...inventory.descriptions, ...nextInventory.descriptions ],
+        assets:       [ ...inventory.assets || [],       ...nextInventory.assets || [] ],
+        descriptions: [ ...inventory.descriptions || [], ...nextInventory.descriptions || [] ],
     };
 }
 
