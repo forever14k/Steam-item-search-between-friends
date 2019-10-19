@@ -13,7 +13,12 @@ export function dedupeInventoryEntities(inventory: SteamInventory): SteamInvento
 function dedupeInventoriesEntities(entities: SteamInventoryAsset[]): SteamInventoryAsset[];
 function dedupeInventoriesEntities(entities: SteamInventoryDescription[]): SteamInventoryDescription[];
 function dedupeInventoriesEntities(
-    entities: (SteamInventoryAsset | SteamInventoryDescription)[]): (SteamInventoryAsset | SteamInventoryDescription)[] {
+    entities?: (SteamInventoryAsset | SteamInventoryDescription)[]): (SteamInventoryAsset | SteamInventoryDescription)[] {
+
+    if (!entities || !entities.length) {
+        return [];
+    }
+
     return Array.from(
         new Map<string, SteamInventoryAsset | SteamInventoryDescription>(
             entities.map(entry => [ getInventoryEntityId(entry), entry ],

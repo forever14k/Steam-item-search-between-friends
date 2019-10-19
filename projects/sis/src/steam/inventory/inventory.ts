@@ -1,6 +1,6 @@
 export interface SteamInventory {
-    assets: SteamInventoryAsset[];
-    descriptions: SteamInventoryDescription[];
+    assets?: SteamInventoryAsset[];
+    descriptions?: SteamInventoryDescription[];
     success: SteamInventoryBoolean;
     more_items?: SteamInventoryBoolean;
     total_inventory_count?: number;
