@@ -3,6 +3,7 @@ import { of, SchedulerAction, SchedulerLike, Subscription, timer } from 'rxjs';
 import { Executor, Job } from './executor';
 
 
+// TODO: create custom operator to use executor
 export class ExecutorScheduler implements SchedulerLike {
 
     constructor(private _executor: Executor) {
@@ -36,7 +37,10 @@ class ExecutorSchedulerAction<T> extends Subscription implements SchedulerAction
                 if (delay !== undefined) {
                     job = timer(delay);
                 }
-                return job.subscribe(() => this._work(state));
+                return job.subscribe(() =>
+                    // TODO: work returns void, can not pass subscription to executor
+                    this._work(state)
+                );
             },
         };
     }
