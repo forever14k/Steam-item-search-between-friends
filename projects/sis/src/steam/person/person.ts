@@ -3,18 +3,18 @@ export interface SteamPerson {
     id32: string;
     id64: string;
 
-    status: SteamPerson.Status;
+    status?: SteamPerson.Status;
 
-    name: string;
+    name?: string;
     statusText?: string;
     avatarUrl?: string;
+
 }
 
 
 export namespace SteamPerson {
 
     export enum Status {
-        Unknown,
         Offline,
         InGame,
         Online,
