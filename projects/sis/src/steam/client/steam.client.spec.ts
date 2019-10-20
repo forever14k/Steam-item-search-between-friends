@@ -1,4 +1,5 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { HttpRequest } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { Executor, ImmediateExecutor } from '../../executor';
@@ -7,7 +8,6 @@ import {
     ClosedInventoryError, STEAM_CLIENT_CONFIG, SteamClient, SteamClientConfig, TooManyRequestsError,
     UnaccessibleInventoryError,
 } from './steam-client';
-import { HttpRequest } from '@angular/common/http';
 import { STEAM_INVENTORY_COUNT_PARAM, STEAM_INVENTORY_START_ASSET_ID_PARAM } from './steam-client-params';
 import { SteamInventory, SteamInventoryBoolean } from '../inventory';
 

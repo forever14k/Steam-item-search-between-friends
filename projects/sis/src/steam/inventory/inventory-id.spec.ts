@@ -1,6 +1,7 @@
 import { SteamInventoryAsset, SteamInventoryDescription } from './inventory';
 import { getInventoryEntityId } from './inventory-id';
 
+
 describe('getInventoryEntityId', () => {
 
     it('should return same id for each entity', () => {

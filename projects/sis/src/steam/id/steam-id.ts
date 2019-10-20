@@ -1,5 +1,6 @@
 import { Big } from 'big.js';
 
+
 const STEAM_MAGIC_NUMBER = new Big('76561197960265728');
 
 export function toSteamId64(steamId32: string): string {
