@@ -39,7 +39,7 @@ class ExecutorSchedulerAction<T> extends Subscription implements SchedulerAction
                 }
                 return job.subscribe(() =>
                     // TODO: work returns void, can not pass subscription to executor
-                    this._work(state)
+                    this._work(state),
                 );
             },
         };
