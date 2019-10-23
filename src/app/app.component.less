@@ -1,0 +1,52 @@
+sisbf-app {
+    display: block;
+    padding: 10px;
+    margin-bottom: 10px;
+
+    background-color: #015e80;
+
+    .sisbf-app {
+        &__inputs {
+            display: grid;
+            grid-template-columns: 3fr 2fr 2fr;
+
+            &-query, &-appid, &-contextid {
+                & > * {
+                    width: 100%;
+                    padding: 0 5px;
+                    box-sizing: border-box;
+
+                }
+
+                &:first-of-type {
+                    & > * {
+                        padding-left: 0;
+                    }
+                }
+                &:last-of-type {
+                    & > * {
+                        padding-right: 0;
+                    }
+                }
+            }
+        }
+
+        &__controls {
+            &-search, &-load {
+                padding: 0 5px;
+                display: inline-block;
+
+                &:first-of-type {
+                    padding-left: 0;
+                }
+                &:last-of-type {
+                    padding-right: 0;
+                }
+            }
+        }
+    }
+}
+
+body {
+    background-color: black;
+}

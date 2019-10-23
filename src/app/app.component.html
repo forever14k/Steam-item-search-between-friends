@@ -1,0 +1,28 @@
+<div class="sisbf-app__inputs" [formGroup]="inputs">
+    <div class="sisbf-app__inputs-query">
+        <mat-form-field>
+            <input matInput placeholder="Enter name" formControlName="query">
+        </mat-form-field>
+    </div>
+    <div class="sisbf-app__inputs-appid">
+        <mat-form-field>
+            <input matInput placeholder="Appid" formControlName="appId">
+            <mat-error *ngIf="inputs.controls.appId?.errors?.required">Appid is required</mat-error>
+        </mat-form-field>
+    </div>
+    <div class="sisbf-app__inputs-contextid">
+        <mat-form-field>
+            <input matInput placeholder="Context" formControlName="contextId">
+            <mat-error *ngIf="inputs.controls.contextId?.errors?.required">Contextid is required</mat-error>
+        </mat-form-field>
+    </div>
+</div>
+
+<div class="sisbf-app__controls">
+    <div class="sisbf-app__controls-search">
+        <button mat-raised-button color="primary" (click)="onSearch()">Search</button>
+    </div>
+    <div class="sisbf-app__controls-load">
+        <button mat-raised-button color="primary" (click)="onLoadInventories()">Load inventories</button>
+    </div>
+</div>
