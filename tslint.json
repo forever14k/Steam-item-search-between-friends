@@ -152,10 +152,6 @@
             }
         ],
         "no-consecutive-blank-lines": false,
-        "no-inferrable-types": [
-            true,
-            "ignore-params"
-        ],
         "no-non-null-assertion": true,
         "no-redundant-jsdoc": true,
         "object-literal-key-quotes": [
