@@ -24,8 +24,9 @@ import { AppComponent } from './app.component';
         {
             provide: STEAM_CLIENT_CONFIG,
             useValue: {
+                // TODO: move to const
                 executor: new SteamPublicAPIExecutor({ rpm: 30 }),
-            } as SteamClientConfig,
+            } as SteamClientConfig ,
         },
         SteamClient,
     ],
