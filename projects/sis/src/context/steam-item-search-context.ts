@@ -1,12 +1,17 @@
-import { merge, Observable, of } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { merge, Observable, of, throwError } from 'rxjs';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 
 import { SteamPerson } from '../steam/person/person';
-import { SteamInventory } from '../steam/inventory/inventory';
-import { SteamClient } from '../steam/client/steam-client';
+import { SteamInventory, SteamInventoryBoolean } from '../steam/inventory/inventory';
+import {
+    ClosedInventoryError, NotFoundInventoryError, SteamClient, TooManyRequestsError, UnaccessibleInventoryError
+} from '../steam/client/steam-client';
 
 import { SteamPersonsDataSource, SteamPersonsSelector } from './steam-persons-data-source';
 
+const EMPTY_INVENTORY: SteamInventory = {
+    success: SteamInventoryBoolean.TRUE,
+};
 
 export class SteamItemSearchContext {
 
@@ -47,6 +52,20 @@ export class SteamItemSearchContext {
                             })
                             .map(person => {
                                 return this._steamClient.getInventory(person.id64, this._appId, this._contextId).pipe(
+                                    catchError((error: Error, caught: Observable<SteamInventory>) => {
+                                        if (error instanceof ClosedInventoryError ||
+                                            error instanceof UnaccessibleInventoryError ||
+                                            error instanceof NotFoundInventoryError) {
+
+                                            return of(EMPTY_INVENTORY);
+                                        }
+
+                                        if (error instanceof TooManyRequestsError) {
+                                            return caught;
+                                        }
+
+                                        return throwError(error);
+                                    }),
                                     tap(inventory => this._inventories.set(person.id64, inventory)),
                                 );
                             }),
