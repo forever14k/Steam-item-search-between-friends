@@ -1,10 +1,10 @@
 import { Observable, of } from 'rxjs';
+import { takeWhile, tap } from 'rxjs/operators';
 
 import { SteamClient, SteamPerson } from '../steam';
 
-import { SteamItemSearchContext, SteamItemSearchInventories } from './steam-item-serach-context';
 import { SteamPersons, SteamPersonsDataSource, SteamPersonsSelector } from './steam-persons-data-source';
-import { takeWhile, tap } from 'rxjs/operators';
+import { SteamItemSearchContext, SteamItemSearchInventories } from './steam-item-search-context';
 
 
 describe('SteamItemSearchContext', () => {
