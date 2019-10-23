@@ -3,8 +3,8 @@ import { catchError, map, subscribeOn, switchMap } from 'rxjs/operators';
 import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 
-import { LANGUAGE, STEAM_INVENTORY_API_PATH } from '../config';
 import { Executor, ExecutorScheduler } from '../../executor';
+import { LANGUAGE, STEAM_INVENTORY_API_PATH } from '../config';
 import { SteamInventory, dedupeInventoryEntities } from '../inventory';
 import {
     STEAM_INVENTORY_COUNT_PARAM, STEAM_INVENTORY_START_ASSET_ID_PARAM, STEAM_LANGUAGE_PARAM,
