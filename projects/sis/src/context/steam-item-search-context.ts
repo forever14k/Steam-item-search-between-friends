@@ -15,6 +15,7 @@ const EMPTY_INVENTORY: SteamInventory = {
 
 export class SteamItemSearchContext {
 
+    private _total: number = 0;
     private _persons: Map<SteamPerson['id64'], SteamPerson> = new Map();
     private _inventories: Map<SteamPerson['id64'], SteamInventory> = new Map();
 
@@ -34,7 +35,7 @@ export class SteamItemSearchContext {
                 });
                 return {
                     inventories: inventories,
-                    total: inventories.length,
+                    total: this._total,
                 };
             }),
         );
@@ -44,6 +45,7 @@ export class SteamItemSearchContext {
     private fetchInventories(selector: SteamPersonsSelector): Observable<void> {
         return this._dataSource.getPersons(selector).pipe(
             switchMap(persons => {
+                this._total = persons.total;
                 return merge(
                         ...persons.persons
                             .filter(person => {
