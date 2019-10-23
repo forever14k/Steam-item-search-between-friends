@@ -1,8 +1,8 @@
 import { SchedulerLike } from 'rxjs';
+import { fakeAsync, tick } from '@angular/core/testing';
 
 import { Executor, Job } from './executor';
 import { ExecutorScheduler } from './executor-scheduler';
-import { fakeAsync, tick } from '@angular/core/testing';
 
 
 describe('ExecutorScheduler', () => {

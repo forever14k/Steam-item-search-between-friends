@@ -75,6 +75,7 @@ export class SteamClient {
                 if (error instanceof HttpErrorResponse) {
                     switch (error.status) {
                         case 403: throw new ClosedInventoryError(steamId64, appid, contextId);
+                        case 404: throw new NotFoundInventoryError(steamId64, appid, contextId);
                         case 429: throw new TooManyRequestsError();
                         case 500: throw new UnaccessibleInventoryError(steamId64, appid, contextId);
                         default:  throw error;
@@ -117,6 +118,13 @@ export class UnaccessibleInventoryError extends Error {
         super(`Inventory of ID:'${steamId64}' for APP_ID:'${appid}' with CONTEXT_ID:'${contextId}' can not be accessed`);
     }
 }
+
+export class NotFoundInventoryError extends Error {
+    constructor(steamId64: string, appid: number, contextId: number) {
+        super(`Inventory of ID:'${steamId64}' for APP_ID:'${appid}' with CONTEXT_ID:'${contextId}' can not be found`);
+    }
+}
+
 
 export class ClosedInventoryError extends Error {
     constructor(steamId64: string, appid: number, contextId: number) {

@@ -1,7 +1,8 @@
 import { Subscription } from 'rxjs';
 import { fakeAsync, tick, TestBed } from '@angular/core/testing';
 
-import { Job } from '../../executor';
+import { Job } from '../../executor/executor';
+
 import {
     STEAM_PUBLIC_API_EXECUTOR_CONFIG, SteamPublicAPIExecutor, SteamPublicAPIExecutorConfig,
 } from './steam-public-api-executor';

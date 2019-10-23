@@ -2,14 +2,15 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { HttpRequest } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
-import { Executor, ImmediateExecutor } from '../../executor';
+import { Executor } from '../../executor/executor';
+import { ImmediateExecutor } from '../../executor/immediate-executor';
+import { SteamInventory, SteamInventoryBoolean } from '../inventory/inventory';
 
 import {
-    ClosedInventoryError, STEAM_CLIENT_CONFIG, SteamClient, SteamClientConfig, TooManyRequestsError,
-    UnaccessibleInventoryError,
+    ClosedInventoryError, NotFoundInventoryError, STEAM_CLIENT_CONFIG, SteamClient, SteamClientConfig,
+    TooManyRequestsError, UnaccessibleInventoryError,
 } from './steam-client';
 import { STEAM_INVENTORY_COUNT_PARAM, STEAM_INVENTORY_START_ASSET_ID_PARAM } from './steam-client-params';
-import { SteamInventory, SteamInventoryBoolean } from '../inventory';
 
 
 describe('SteamClient', () => {
@@ -212,6 +213,17 @@ describe('SteamClient', () => {
             tick();
             const req = httpTestingController.expectOne(() => true);
             req.flush(null, { status: 500, statusText: 'Unaccessible inventory' });
+        }));
+
+        it('should handle 404 http error', fakeAsync(() => {
+            client.getInventory('0', 0, 0).subscribe({
+                error: error => {
+                    expect(error).toEqual(jasmine.any(NotFoundInventoryError));
+                },
+            });
+            tick();
+            const req = httpTestingController.expectOne(() => true);
+            req.flush(null, { status: 404, statusText: 'Not Found' });
         }));
 
     });
