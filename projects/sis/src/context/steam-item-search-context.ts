@@ -53,6 +53,7 @@ export class SteamItemSearchContext {
                             .map(person => {
                                 return this._steamClient.getInventory(person.id64, this._appId, this._contextId).pipe(
                                     catchError((error: Error, caught: Observable<SteamInventory>) => {
+                                        // TODO: expose errors
                                         if (error instanceof ClosedInventoryError ||
                                             error instanceof UnaccessibleInventoryError ||
                                             error instanceof NotFoundInventoryError) {
