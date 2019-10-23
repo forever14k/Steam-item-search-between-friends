@@ -4,7 +4,7 @@ import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { SteamPerson } from '../steam/person/person';
 import { SteamInventory, SteamInventoryBoolean } from '../steam/inventory/inventory';
 import {
-    ClosedInventoryError, NotFoundInventoryError, SteamClient, TooManyRequestsError, UnaccessibleInventoryError
+    ClosedInventoryError, NotFoundInventoryError, SteamClient, TooManyRequestsError, UnaccessibleInventoryError,
 } from '../steam/client/steam-client';
 
 import { SteamPersonsDataSource, SteamPersonsSelector } from './steam-persons-data-source';
