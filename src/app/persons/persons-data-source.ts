@@ -1,16 +1,16 @@
 import { defer, Observable, of } from 'rxjs';
-import { publishReplay, refCount } from 'rxjs/operators';
+import { map, publishReplay, refCount } from 'rxjs/operators';
 import { Inject, Injectable } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
-import { SteamPerson, toSteamId64 } from 'sis';
+import { SteamPersonsDataSource, SteamPerson, toSteamId64, SteamPersons, SteamPersonsSelector } from 'sis';
 
 
 
 @Injectable()
-export class PersonsSource {
+export class SISBFPersonsDataSource implements SteamPersonsDataSource {
 
-    private _persons: Observable<SteamPerson[]>;
+    private _persons: Observable<SteamPersons>;
 
 
     constructor(@Inject(DOCUMENT) private _document: Document) {
@@ -18,12 +18,22 @@ export class PersonsSource {
     }
 
 
-    getPersons(): Observable<SteamPerson[]> {
+    getPersons(selector?: SteamPersonsSelector): Observable<SteamPersons> {
+        if (selector && selector.offset !== undefined) {
+            return this._persons.pipe(
+                map(persons => {
+                   return {
+                       persons: persons.persons.slice(selector.offset),
+                       total: persons.total,
+                   };
+                }),
+            );
+        }
         return this._persons;
     }
 
 
-    private getPersonsFromDOM(): SteamPerson[] {
+    private getPersonsFromDOM(): SteamPersons {
         const persons: SteamPerson[] = [];
 
         const elements = this._document.querySelectorAll('.profile_friends [data-miniprofile]');
@@ -80,7 +90,10 @@ export class PersonsSource {
             }
         }
 
-        return persons;
+        return {
+            persons: persons,
+            total: persons.length,
+        };
     }
 
 
