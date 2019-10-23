@@ -1,7 +1,10 @@
 import { merge, Observable, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 
-import { SteamPerson, SteamClient, SteamInventory } from '../steam';
+import { SteamPerson } from '../steam/person/person';
+import { SteamInventory } from '../steam/inventory/inventory';
+import { SteamClient } from '../steam/client/steam-client';
+
 import { SteamPersonsDataSource, SteamPersonsSelector } from './steam-persons-data-source';
 
 

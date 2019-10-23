@@ -2,6 +2,18 @@
  * Public API Surface of sis
  */
 
-export * from './executor/public-api';
-export * from './steam/public-api';
-export * from './context/public-api';
+export * from './executor/executor';
+export * from './executor/executor-scheduler';
+export * from './executor/immediate-executor';
+export * from './executor/sequential-executor';
+
+export * from './steam/id/steam-id';
+export * from './steam/inventory/inventory';
+export * from './steam/inventory/inventory-id';
+export * from './steam/inventory/inventory-dedupe';
+export * from './steam/person/person';
+export * from './steam/client/steam-client';
+export * from './steam/client/steam-public-api-executor';
+
+export * from './context/steam-persons-data-source';
+export * from './context/steam-item-search-context';
