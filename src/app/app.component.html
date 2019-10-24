@@ -1,21 +1,23 @@
-<div class="sisbf-app__inputs" [formGroup]="inputs">
+<div class="sisbf-app__inputs">
     <div class="sisbf-app__inputs-query">
         <mat-form-field>
-            <input matInput placeholder="Enter name" formControlName="query">
+            <input matInput placeholder="Enter name" [formControl]="query">
         </mat-form-field>
     </div>
-    <div class="sisbf-app__inputs-appid">
-        <mat-form-field>
-            <input matInput placeholder="Appid" formControlName="appId">
-            <mat-error *ngIf="inputs.controls.appId?.errors?.required">Appid is required</mat-error>
-        </mat-form-field>
-    </div>
-    <div class="sisbf-app__inputs-contextid">
-        <mat-form-field>
-            <input matInput placeholder="Context" formControlName="contextId">
-            <mat-error *ngIf="inputs.controls.contextId?.errors?.required">Contextid is required</mat-error>
-        </mat-form-field>
-    </div>
+    <ng-container [formGroup]="app">
+        <div class="sisbf-app__inputs-appid">
+            <mat-form-field>
+                <input matInput placeholder="Appid" formControlName="appId">
+                <mat-error *ngIf="app.controls.appId?.errors?.required">Appid is required</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="sisbf-app__inputs-contextid">
+            <mat-form-field>
+                <input matInput placeholder="Context" formControlName="contextId">
+                <mat-error *ngIf="app.controls.contextId?.errors?.required">Contextid is required</mat-error>
+            </mat-form-field>
+        </div>
+    </ng-container>
 </div>
 
 <div class="sisbf-app__controls">
@@ -26,3 +28,33 @@
         <button mat-raised-button color="primary" (click)="onLoadInventories()">Load inventories</button>
     </div>
 </div>
+
+<ng-container *ngIf="active && results?.results?.length">
+    <div class="sisbf-app__progress">
+        <ng-container *ngIf="results.results[results.results.length - 1] as result">
+            <ng-container *ngIf="result.person as person">
+                <div class="sisbf-app__progress-person">
+                    <div class="sisbf-app__progress-person__avatar">
+                        <img [src]="person.avatarUrl" [attr.alt]="person.name">
+                    </div>
+                    <div class="sisbf-app__progress-person__name">
+                        <span>{{ person.name }}</span>
+                    </div>
+                </div>
+            </ng-container>
+        </ng-container>
+        <div class="sisbf-app__progress-status">
+            <div class="sisbf-app__progress-status__count">
+                <span>{{ results.results.length }} / {{ results.total }}</span>
+            </div>
+            <div class="sisbf-app__progress-status__percent">
+                <span>{{ results.results.length / results.total | percent }}</span>
+            </div>
+            <div class="sisbf-app__progress-status__time">
+                <!-- TODO: ETA -->
+                <span>{{ (results.total - results.results.length) * ((1000 * 60) / STEAM_MAX_RPM) }}</span>
+            </div>
+        </div>
+        <mat-progress-bar mode="query"></mat-progress-bar>
+    </div>
+</ng-container>

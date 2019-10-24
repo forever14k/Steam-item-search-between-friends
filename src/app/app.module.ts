@@ -8,6 +8,7 @@ import { MatProgressBarModule, MatFormFieldModule, MatInputModule, MatButtonModu
 
 import { STEAM_CLIENT_CONFIG, SteamClient, SteamClientConfig, SteamPublicAPIExecutor } from 'sis';
 
+import { STEAM_MAX_RPM } from './app-config';
 import { AppComponent } from './app.component';
 
 
@@ -24,9 +25,8 @@ import { AppComponent } from './app.component';
         {
             provide: STEAM_CLIENT_CONFIG,
             useValue: {
-                // TODO: move to const
-                executor: new SteamPublicAPIExecutor({ rpm: 30 }),
-            } as SteamClientConfig ,
+                executor: new SteamPublicAPIExecutor({ rpm: STEAM_MAX_RPM }),
+            } as SteamClientConfig,
         },
         SteamClient,
     ],
