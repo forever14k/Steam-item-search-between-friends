@@ -1,9 +1,9 @@
 import { Observable } from 'rxjs';
 
-import { SteamPerson } from '../steam/person/person';
+import { SteamPerson } from './person';
 
 
-export interface SteamPersonsDataSource {
+export interface PersonsDataSource {
     getPersons(selector?: SteamPersonsSelector): Observable<SteamPersons>;
 }
 
