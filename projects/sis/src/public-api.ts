@@ -3,7 +3,7 @@
  */
 
 export * from './executor/executor';
-export * from './executor/executor-scheduler';
+export * from './executor/subcribe-on-executor';
 export * from './executor/immediate-executor';
 export * from './executor/sequential-executor';
 

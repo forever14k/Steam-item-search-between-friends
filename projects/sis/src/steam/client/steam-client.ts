@@ -1,10 +1,10 @@
-import { Observable, of, SchedulerLike } from 'rxjs';
-import { catchError, map, subscribeOn, switchMap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 
 import { Executor } from '../../executor/executor';
-import { ExecutorScheduler } from '../../executor/executor-scheduler';
+import { subscribeOnExecutor } from '../../executor/subcribe-on-executor';
 import { SteamInventory } from '../inventory/inventory';
 import { dedupeInventoryEntities } from '../inventory/inventory-dedupe';
 
@@ -36,8 +36,6 @@ const STEAM_CLIENT_CONFIG_DEFAULTS: Partial<SteamClientConfig> = {
 export class SteamClient {
 
     private _config: SteamClientConfig;
-    private _scheduler: SchedulerLike;
-
 
     constructor(private _http: HttpClient, @Inject(STEAM_CLIENT_CONFIG) config: SteamClientConfig) {
         this._config = {
@@ -48,7 +46,6 @@ export class SteamClient {
                 ...config && config.inventory ? config.inventory : {},
             },
         };
-        this._scheduler = new ExecutorScheduler(this._config.executor);
     }
 
 
@@ -70,7 +67,7 @@ export class SteamClient {
             params = params.set(STEAM_INVENTORY_START_ASSET_ID_PARAM, String(startAssetId));
         }
         return this._http.get<SteamInventory>(url, { params: params }).pipe(
-            subscribeOn(this._scheduler),
+            subscribeOnExecutor(this._config.executor),
             catchError(error => {
                 if (error instanceof HttpErrorResponse) {
                     switch (error.status) {
