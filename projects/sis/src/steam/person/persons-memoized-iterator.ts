@@ -9,6 +9,7 @@ import { PersonsDataSource, SteamPersonsSelector } from './persons-data-source';
 export class PersonsMemoizedIterator<T> {
 
     private _total: number = 0;
+    private _order: SteamPerson['id64'][] = [];
     private _persons: Map<SteamPerson['id64'], SteamPerson> = new Map();
     private _results: Map<SteamPerson['id64'], T> = new Map();
 
@@ -19,10 +20,10 @@ export class PersonsMemoizedIterator<T> {
     getResults(): Observable<PersonsIterationsResults<T>> {
         return this.fetchResults({ offset: 0 }).pipe(
             map(() => {
-                const results = Array.from(this._results.entries()).map(([ id64, result ]) => {
+                const results = this._order.map(id64 => {
                     return {
                         person: this._persons.get(id64),
-                        result: result,
+                        result: this._results.get(id64),
                     };
                 });
                 return {
@@ -45,7 +46,14 @@ export class PersonsMemoizedIterator<T> {
                                 return !this._results.has(person.id64);
                             })
                             .map(person => this._factory(person).pipe(
-                                tap(result => this._results.set(person.id64, result)),
+                                tap(result => {
+                                    this._results.set(person.id64, result);
+                                    const orderIdx = this._order.indexOf(person.id64);
+                                    if (orderIdx !== -1) {
+                                        this._order.splice(orderIdx, 1);
+                                    }
+                                    this._order.push(person.id64);
+                                }),
                             )),
                     )
                     .pipe(
