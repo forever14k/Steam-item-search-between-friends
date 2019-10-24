@@ -4,7 +4,7 @@ import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 
 import { Executor } from '../../executor/executor';
-import { subscribeOnExecutor } from '../../executor/subcribe-on-executor';
+import { subscribeOnExecutor } from '../../executor/subscribe-on-executor';
 import { SteamInventory } from '../inventory/inventory';
 import { dedupeInventoryEntities } from '../inventory/inventory-dedupe';
 
