@@ -17,4 +17,4 @@ export * from './steam/client/steam-public-api-executor';
 
 export * from './steam/person/persons-data-source';
 export * from './steam/person/persons-memoized-iterator';
-export * from './steam/person/persons-inventories-interator-config';
+export * from './steam/person/persons-inventories-iterator-config';
