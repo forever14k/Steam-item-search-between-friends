@@ -1,10 +1,11 @@
 import { Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { Component, Inject, OnDestroy } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import {
-    SteamClient, SteamItemSearchContext, SteamPersonsDataSource,
+    SteamClient, createPersonsInventoryResultFactory, PersonsDataSource, PersonsMemoizedIterator,
 } from 'sis';
 
 import { SISBFPersonsDataSource } from './persons/persons-data-source';
@@ -23,22 +24,12 @@ export class AppComponent implements OnDestroy {
         contextId: this._fb.control('', Validators.required),
     });
 
-    private _appChangesSubscription: Subscription = Subscription.EMPTY;
     private _inventoriesSubscription: Subscription = Subscription.EMPTY;
-    private _dataSource: SteamPersonsDataSource = new SISBFPersonsDataSource(this._document);
+    private _dataSource: PersonsDataSource = new SISBFPersonsDataSource(this._document);
 
 
     constructor(private _fb: FormBuilder, private _steamClient: SteamClient,
                 @Inject(DOCUMENT) private _document: Document) {
-
-        this._appChangesSubscription = this._inputs.valueChanges.subscribe(
-            () => {
-                if (this._inventoriesSubscription) {
-                    this._inventoriesSubscription.unsubscribe();
-                }
-            },
-        );
-
     }
 
 
@@ -47,11 +38,14 @@ export class AppComponent implements OnDestroy {
     }
 
     onLoadInventories() {
-        const context = new SteamItemSearchContext(
-            this._steamClient, this._dataSource,
-            this._inputs.value.appId, this._inputs.value.contextId,
+        const iterator = new PersonsMemoizedIterator(
+            this._dataSource,
+            createPersonsInventoryResultFactory(this._steamClient, this._inputs.value.appId, this._inputs.value.contextId),
         );
-        this._inventoriesSubscription = context.getInventories().subscribe(console.log);
+        this._inventoriesSubscription = iterator
+            .getResults()
+            .pipe(takeUntil(this._inputs.valueChanges))
+            .subscribe(console.log);
     }
 
 
@@ -61,7 +55,6 @@ export class AppComponent implements OnDestroy {
 
 
     ngOnDestroy() {
-        this._appChangesSubscription.unsubscribe();
         this._inventoriesSubscription.unsubscribe();
     }
 

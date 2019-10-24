@@ -3,12 +3,12 @@ import { map, publishReplay, refCount } from 'rxjs/operators';
 import { Inject, Injectable } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
-import { SteamPersonsDataSource, SteamPerson, toSteamId64, SteamPersons, SteamPersonsSelector } from 'sis';
+import { PersonsDataSource, SteamPerson, toSteamId64, SteamPersons, SteamPersonsSelector } from 'sis';
 
 
 
 @Injectable()
-export class SISBFPersonsDataSource implements SteamPersonsDataSource {
+export class SISBFPersonsDataSource implements PersonsDataSource {
 
     private _persons: Observable<SteamPersons>;
 
