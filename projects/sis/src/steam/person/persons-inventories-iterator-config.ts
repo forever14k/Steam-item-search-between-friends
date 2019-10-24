@@ -3,7 +3,7 @@ import { catchError } from 'rxjs/operators';
 
 import { SteamInventory } from '../inventory/inventory';
 import {
-    ClosedInventoryError, NotFoundInventoryError, SteamClient, TooManyRequestsError, UnaccessibleInventoryError
+    ClosedInventoryError, NotFoundInventoryError, SteamClient, TooManyRequestsError, UnaccessibleInventoryError,
 } from '../client/steam-client';
 
 import { SteamPerson } from './person';
