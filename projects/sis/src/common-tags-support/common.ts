@@ -1,8 +1,9 @@
 export namespace SisCommonTags {
 
     export enum KindEnum {
-        Name  = 'Name',
-        Color = 'Color',
+        Name     = 'Name',
+        Color    = 'Color',
+        Tradable = 'Tradable',
     }
 
 }
