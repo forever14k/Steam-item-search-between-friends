@@ -7,14 +7,11 @@ import { SteamInventoryAsset, SteamInventoryDescription } from '../steam/invento
 import { SisTag } from './tag';
 
 
-const TAG_PARSERS_MANAGER_PLUGIN = new InjectionToken<TagParsersManagerPlugin>('TagParsersManagerPlugin');
+export const TAG_PARSERS_MANAGER_PLUGIN = new InjectionToken<TagParsersManagerPlugin>('TagParsersManagerPlugin');
 
 export interface TagParsersManagerPlugin {
-    parse(asset: SteamInventoryAsset, description: SteamInventoryDescription): Observable<SisTag[]>;
+    parse(description: SteamInventoryDescription, asset: SteamInventoryAsset): Observable<SisTag[]>;
 }
-
-
-const EMPTY_TAGS = of([]);
 
 
 @Injectable()
@@ -24,12 +21,12 @@ export class TagParsersManager {
     }
 
 
-    parse(asset: SteamInventoryAsset, description: SteamInventoryDescription): Observable<SisTag[]> {
+    parse(description: SteamInventoryDescription, asset: SteamInventoryAsset): Observable<SisTag[]> {
         if (!this._plugins || !this._plugins.length) {
             return EMPTY_TAGS;
         }
 
-        return forkJoin(this._plugins.map(plugin => plugin.parse(asset, description)))
+        return forkJoin(this._plugins.map(plugin => plugin.parse(description, asset)))
             .pipe(map(tags => reduceTags(tags)));
     }
 
@@ -39,3 +36,5 @@ export class TagParsersManager {
 function reduceTags(tags: SisTag[][]): SisTag[] {
     return tags.reduce((result, part) => [...result, ...part], []);
 }
+
+export const EMPTY_TAGS = of([]);

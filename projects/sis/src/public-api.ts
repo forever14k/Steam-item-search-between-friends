@@ -24,3 +24,8 @@ export * from './steam/person/persons-inventories-iterator-config';
 export * from './tag/tag';
 export * from './tag/tag-parsers-manager';
 
+export * from './common-tags-support/common';
+export * from './common-tags-support/color/color';
+export * from './common-tags-support/color/parser';
+export * from './common-tags-support/name/name';
+export * from './common-tags-support/name/parser';
