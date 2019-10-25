@@ -7,10 +7,12 @@ import {
 } from '../client/steam-client';
 
 import { SteamPerson } from './person';
-import { PersonResultFactory } from './persons-memoized-iterator';
+import { IteratorResultFactory } from '../../iterator/memoized-iterator';
+import { IteratorTrackBy } from '../../iterator/iterator-track-by';
 
-export function createPersonsInventoryResultFactory(steamClient: SteamClient,
-                                                    appId: number, contextId: number): PersonResultFactory<PersonInventoryResult> {
+export function createSteamPersonInventoryResultFactory(
+    steamClient: SteamClient, appId: number, contextId: number,
+): IteratorResultFactory<SteamPerson, PersonInventoryResult> {
 
     return (person: SteamPerson): Observable<PersonInventoryResult> => {
         return steamClient.getInventory(person.id64, appId, contextId).pipe(
@@ -26,3 +28,5 @@ export function createPersonsInventoryResultFactory(steamClient: SteamClient,
 }
 
 export type PersonInventoryResult = SteamInventory | ClosedInventoryError | NotFoundInventoryError | UnaccessibleInventoryError | Error;
+
+export const steamPersonTrackBy: IteratorTrackBy<SteamPerson> = person => person.id64;
