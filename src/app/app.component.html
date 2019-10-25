@@ -32,7 +32,7 @@
 <ng-container *ngIf="active && results?.results?.length">
     <div class="sisbf-app__progress">
         <ng-container *ngIf="results.results[results.results.length - 1] as result">
-            <ng-container *ngIf="result.person as person">
+            <ng-container *ngIf="result.entity as person">
                 <div class="sisbf-app__progress-person">
                     <div class="sisbf-app__progress-person__avatar">
                         <img [src]="person.avatarUrl" [attr.alt]="person.name">

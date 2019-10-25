@@ -3,14 +3,16 @@ import { map, publishReplay, refCount } from 'rxjs/operators';
 import { Inject, Injectable } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
-import { PersonsDataSource, SteamPerson, toSteamId64, SteamPersons, SteamPersonsSelector } from 'sis';
+import {
+    SteamPerson, toSteamId64, IteratorDataSource, IteratorPartition, IteratorPartitionSelector,
+} from 'sis';
 
 
 
 @Injectable()
-export class SISBFPersonsDataSource implements PersonsDataSource {
+export class SteamPersonsIteratorDataSource implements IteratorDataSource<SteamPerson> {
 
-    private _persons: Observable<SteamPersons>;
+    private _persons: Observable<IteratorPartition<SteamPerson>>;
 
 
     constructor(@Inject(DOCUMENT) private _document: Document) {
@@ -18,12 +20,12 @@ export class SISBFPersonsDataSource implements PersonsDataSource {
     }
 
 
-    getPersons(selector?: SteamPersonsSelector): Observable<SteamPersons> {
+    getPartition(selector?: IteratorPartitionSelector): Observable<IteratorPartition<SteamPerson>> {
         if (selector && selector.offset !== undefined) {
             return this._persons.pipe(
                 map(persons => {
                    return {
-                       persons: persons.persons.slice(selector.offset),
+                       entities: persons.entities.slice(selector.offset),
                        total: persons.total,
                    };
                 }),
@@ -33,7 +35,7 @@ export class SISBFPersonsDataSource implements PersonsDataSource {
     }
 
 
-    private getPersonsFromDOM(): SteamPersons {
+    private getPersonsFromDOM(): IteratorPartition<SteamPerson> {
         const persons: SteamPerson[] = [];
 
         const elements = this._document.querySelectorAll('.profile_friends [data-miniprofile]');
@@ -91,7 +93,7 @@ export class SISBFPersonsDataSource implements PersonsDataSource {
         }
 
         return {
-            persons: persons,
+            entities: persons,
             total: persons.length,
         };
     }

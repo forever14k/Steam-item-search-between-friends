@@ -5,12 +5,12 @@ import { DOCUMENT } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import {
-    SteamClient, createPersonsInventoryResultFactory, PersonsDataSource, PersonsMemoizedIterator,
-    PersonsIterationsResults, PersonInventoryResult,
+    SteamClient, PersonInventoryResult, IterationsResults, SteamPerson, createSteamPersonInventoryResultFactory,
+    MemoizedIterator, steamPersonTrackBy,
 } from 'sis';
 
 import { STEAM_MAX_RPM } from './app-config';
-import { SISBFPersonsDataSource } from './persons/persons-data-source';
+import { SteamPersonsIteratorDataSource } from './persons/persons-data-source';
 
 
 @Component({
@@ -30,10 +30,10 @@ export class AppComponent implements OnDestroy {
     });
 
     private _inventoriesSubscription: Subscription = Subscription.EMPTY;
-    private _dataSource: PersonsDataSource = new SISBFPersonsDataSource(this._document);
+    private _dataSource: SteamPersonsIteratorDataSource = new SteamPersonsIteratorDataSource(this._document);
 
     private _active: boolean = false;
-    private _results: PersonsIterationsResults<PersonInventoryResult> | null = null;
+    private _results: IterationsResults<SteamPerson, PersonInventoryResult> | null = null;
 
 
     constructor(private _fb: FormBuilder, private _steamClient: SteamClient,
@@ -48,10 +48,8 @@ export class AppComponent implements OnDestroy {
     onLoadInventories() {
         this._active = true;
         this._results = null;
-        this._inventoriesSubscription = new PersonsMemoizedIterator(
-                this._dataSource,
-                createPersonsInventoryResultFactory(this._steamClient, this._app.value.appId, this._app.value.contextId),
-            )
+        const factory = createSteamPersonInventoryResultFactory(this._steamClient, this._app.value.appId, this._app.value.contextId);
+        this._inventoriesSubscription = new MemoizedIterator(this._dataSource, factory, steamPersonTrackBy)
             .getResults()
             .pipe(
                 finalize(() => {
@@ -65,7 +63,7 @@ export class AppComponent implements OnDestroy {
     }
 
 
-    get results(): PersonsIterationsResults<PersonInventoryResult> | null {
+    get results(): IterationsResults<SteamPerson, PersonInventoryResult> | null {
         return this._results;
     }
     get active(): boolean {
