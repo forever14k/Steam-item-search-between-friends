@@ -20,3 +20,7 @@ export * from './steam/client/steam-client';
 export * from './steam/client/steam-public-api-executor';
 
 export * from './steam/person/persons-inventories-iterator-config';
+
+export * from './tag/tag';
+export * from './tag/tag-parsers-manager';
+
