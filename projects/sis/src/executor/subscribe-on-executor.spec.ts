@@ -1,7 +1,7 @@
 import { of } from 'rxjs';
 
 import { Executor, Job } from './executor';
-import { subscribeOnExecutor } from './subcribe-on-executor';
+import { subscribeOnExecutor } from './subscribe-on-executor';
 
 
 describe('subscribeOnExecutor', () => {
