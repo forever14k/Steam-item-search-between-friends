@@ -6,7 +6,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatProgressBarModule, MatFormFieldModule, MatInputModule, MatButtonModule } from '@angular/material';
 
-import { STEAM_CLIENT_CONFIG, SteamClient, SteamClientConfig, SteamPublicAPIExecutor } from 'sis';
+import {
+    STEAM_CLIENT_CONFIG, SteamClient, SteamClientConfig, SteamPublicAPIExecutor, TagParsersManager,
+    TAG_PARSERS_MANAGER_PLUGIN, CommonColorTagParserManagerPlugin, CommonNameTagParserManagerPlugin,
+    CommonTradableTagParserManagerPlugin, CommonExistingItemTagParserManagerPlugin,
+} from 'sis';
 
 import { STEAM_MAX_RPM } from './app-config';
 import { AppComponent } from './app.component';
@@ -22,13 +26,18 @@ import { AppComponent } from './app.component';
         MatProgressBarModule, MatInputModule, MatFormFieldModule, MatButtonModule,
     ],
     providers: [
-        {
-            provide: STEAM_CLIENT_CONFIG,
-            useValue: {
-                executor: new SteamPublicAPIExecutor({ rpm: STEAM_MAX_RPM }),
-            } as SteamClientConfig,
-        },
         SteamClient,
+            {
+                provide: STEAM_CLIENT_CONFIG,
+                useValue: {
+                    executor: new SteamPublicAPIExecutor({ rpm: STEAM_MAX_RPM }),
+                } as SteamClientConfig,
+            },
+        TagParsersManager,
+            { provide: TAG_PARSERS_MANAGER_PLUGIN, multi: true, useClass: CommonNameTagParserManagerPlugin },
+            { provide: TAG_PARSERS_MANAGER_PLUGIN, multi: true, useClass: CommonTradableTagParserManagerPlugin },
+            { provide: TAG_PARSERS_MANAGER_PLUGIN, multi: true, useClass: CommonColorTagParserManagerPlugin },
+            { provide: TAG_PARSERS_MANAGER_PLUGIN, multi: true, useClass: CommonExistingItemTagParserManagerPlugin },
     ],
     bootstrap: [ AppComponent ],
 })

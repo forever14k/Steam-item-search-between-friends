@@ -1,12 +1,12 @@
-import { Subscription } from 'rxjs';
-import { finalize, takeUntil } from 'rxjs/operators';
+import { forkJoin, of, Subscription } from 'rxjs';
+import { finalize, publishReplay, refCount, scan, switchMap, takeUntil } from 'rxjs/operators';
 import { Component, Inject, OnDestroy } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import {
     SteamClient, PersonInventoryResult, IterationsResults, SteamPerson, createSteamPersonInventoryResultFactory,
-    MemoizedIterator, steamPersonTrackBy,
+    MemoizedIterator, steamPersonTrackBy, TagParsersManager, getInventoryEntityId, SteamInventory, SisTag,
 } from 'sis';
 
 import { STEAM_MAX_RPM } from './app-config';
@@ -37,6 +37,7 @@ export class AppComponent implements OnDestroy {
 
 
     constructor(private _fb: FormBuilder, private _steamClient: SteamClient,
+                private _tagParser: TagParsersManager,
                 @Inject(DOCUMENT) private _document: Document) {
     }
 
@@ -49,17 +50,64 @@ export class AppComponent implements OnDestroy {
         this._active = true;
         this._results = null;
         const factory = createSteamPersonInventoryResultFactory(this._steamClient, this._app.value.appId, this._app.value.contextId);
-        this._inventoriesSubscription = new MemoizedIterator(this._dataSource, factory, steamPersonTrackBy)
+        const results =  new MemoizedIterator(this._dataSource, factory, steamPersonTrackBy)
             .getResults()
             .pipe(
                 finalize(() => {
                     this._active = false;
                 }),
+                publishReplay(1), refCount(),
                 takeUntil(this._app.valueChanges),
-            )
-            .subscribe(
-                results => this._results = results,
             );
+
+        this._inventoriesSubscription = results.subscribe(result => {
+            this._results = result;
+        });
+
+        this._inventoriesSubscription.add(results
+            .pipe(
+                switchMap((result: IterationsResults<SteamPerson, SteamInventory>) => {
+                    if (result.results && result.results.length) {
+                        const lastResult = result.results[ result.results.length - 1 ];
+                        if (!(lastResult.result instanceof Error)) {
+                            const inventory = lastResult.result;
+                            if (inventory.assets && inventory.assets.length && inventory.descriptions && inventory.descriptions.length) {
+                                const order = inventory.assets.map(asset => getInventoryEntityId(asset));
+                                const assets = new Map(inventory.assets.map(asset => [ getInventoryEntityId(asset), asset ]));
+                                const descriptions = new Map(inventory.descriptions.map(description =>
+                                    [ getInventoryEntityId(description), description ],
+                                ));
+                                return forkJoin(order.map(id => this._tagParser.parse(descriptions.get(id), assets.get(id))));
+                            }
+                        }
+                    }
+
+                    return of([]);
+                }),
+                scan(
+                    (categories, containers: SisTag[][]) => {
+                        if (containers && containers.length) {
+                            for (const tags of containers) {
+                                if (tags && tags.length) {
+                                    for (const tag of tags) {
+                                        let category = categories.get(tag.categoryName);
+                                        if (!category) {
+                                            category = [];
+                                        }
+                                        if (!category.includes(tag.name)) {
+                                            category.push(tag.name);
+                                        }
+                                        categories.set(tag.categoryName, category);
+                                    }
+                                }
+                            }
+                        }
+                        return categories;
+                    },
+                    new Map<string, any[]>(),
+                ),
+            )
+            .subscribe(console.log));
     }
 
 
