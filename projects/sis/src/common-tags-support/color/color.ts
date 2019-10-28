@@ -4,5 +4,4 @@ import { SisCommonTags } from '../common';
 
 export interface CommonColorSisTag extends SisTag {
     kind: SisCommonTags.KindEnum.Color;
-    color?: string;
 }

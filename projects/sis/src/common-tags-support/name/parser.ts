@@ -5,6 +5,7 @@ import { EMPTY_TAGS, TagParsersManagerPlugin } from '../../tag/tag-parsers-manag
 import { SteamInventoryDescription } from '../../steam/inventory/inventory';
 
 import { SisCommonTags } from '../common';
+import { SIS_COMMON_TAGS_L10N } from '../l10n';
 import { CommonNameSisTag } from './name';
 
 
@@ -14,8 +15,9 @@ export class CommonNameTagParserManagerPlugin implements TagParsersManagerPlugin
     parse(description: SteamInventoryDescription): Observable<CommonNameSisTag[]> {
         if (description && description.market_name) {
             return of([{
-                kind: SisCommonTags.KindEnum.Name,
-                name: description.market_name,
+                kind:         SisCommonTags.KindEnum.Name,
+                categoryName: SIS_COMMON_TAGS_L10N.name.categoryName,
+                name:         description.market_name,
             }]);
         }
 

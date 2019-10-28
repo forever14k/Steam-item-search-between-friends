@@ -16,15 +16,15 @@ describe('TagParsersManager', () => {
             {
                 parse: (_description: SteamInventoryDescription, _asset: SteamInventoryAsset): Observable<SisTag[]> => {
                     return of([
-                        { name: countKind, kind: countKind, count: _asset.amount },
-                        { name: nameKind,  kind: nameKind, value: _description.market_name },
+                        { kind: countKind, categoryName: countKind, name: _asset.amount  },
+                        { kind: nameKind, categoryName: nameKind, name: _description.market_name },
                     ]);
                 },
             },
             {
                 parse: (_description: SteamInventoryDescription, _asset: SteamInventoryAsset): Observable<SisTag[]> => {
                     return of([
-                        { name: appIdKind, kind: appIdKind, appId: _asset.appid },
+                        { kind: appIdKind, categoryName: appIdKind, name: asset.appid },
                     ]);
                 },
             },
@@ -37,9 +37,9 @@ describe('TagParsersManager', () => {
 
         let parseResult: SisTag[];
         manager.parse(description, asset).subscribe(result => parseResult = result);
-        expect(parseResult).toContain(jasmine.objectContaining({ kind: nameKind,  value: description.market_name }));
-        expect(parseResult).toContain(jasmine.objectContaining({ kind: countKind, count: asset.amount }));
-        expect(parseResult).toContain(jasmine.objectContaining({ kind: appIdKind, appId: asset.appid }));
+        expect(parseResult).toContain(jasmine.objectContaining({ kind: nameKind,  name: description.market_name }));
+        expect(parseResult).toContain(jasmine.objectContaining({ kind: countKind, name: asset.amount }));
+        expect(parseResult).toContain(jasmine.objectContaining({ kind: appIdKind, name: asset.appid }));
 
     });
 

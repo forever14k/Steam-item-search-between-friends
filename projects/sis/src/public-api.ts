@@ -25,6 +25,8 @@ export * from './tag/tag';
 export * from './tag/tag-parsers-manager';
 
 export * from './common-tags-support/common';
+export * from './common-tags-support/existing-item-tag/existing-item-tag';
+export * from './common-tags-support/existing-item-tag/parser';
 export * from './common-tags-support/color/color';
 export * from './common-tags-support/color/parser';
 export * from './common-tags-support/name/name';
