@@ -18,7 +18,7 @@ export class CommonExistingItemTagParserManagerPlugin implements TagParsersManag
                     kind:         SisCommonTags.KindEnum.ExistingItemTag,
                     categoryName: tag.localized_category_name,
                     name:         tag.localized_tag_name,
-                    color:        tag.color,
+                    color:        tag.color ? `#${tag.color}` : undefined,
                 };
             }));
         }

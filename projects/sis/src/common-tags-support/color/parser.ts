@@ -45,7 +45,7 @@ export class CommonColorTagParserManagerPlugin implements TagParsersManagerPlugi
                     return of([{
                         kind:         SisCommonTags.KindEnum.Color,
                         categoryName: SIS_COMMON_TAGS_L10N.color.categoryName,
-                        name:         tag.color,
+                        name:         tag.color ? `#${tag.color}` : undefined,
                     }]);
                 }
             }
