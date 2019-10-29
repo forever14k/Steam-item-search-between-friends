@@ -184,7 +184,8 @@
             "never"
         ],
         "no-namespace": false,
-        "prefer-for-of": false
+        "prefer-for-of": false,
+        "no-shadowed-variable": false
     },
     "rulesDirectory": [
         "codelyzer"
