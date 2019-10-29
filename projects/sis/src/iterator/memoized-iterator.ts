@@ -1,5 +1,5 @@
 import { merge, Observable, of } from 'rxjs';
-import { map, publishReplay, refCount, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 
 import { IteratorDataSource, IteratorPartitionSelector } from './iterator-data-source';
 import { IteratorTrackBy } from './iterator-track-by';
@@ -32,7 +32,6 @@ export class MemoizedIterator<E, R, I = any> {
                     total: this._total,
                 };
             }),
-            publishReplay(1), refCount(),
         );
     }
 
