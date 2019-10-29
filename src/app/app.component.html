@@ -61,10 +61,10 @@
 </ng-container>
 
 
-<ng-container *ngIf="unique?.size">
+<ng-container *ngIf="categories?.size">
     <div class="sisbf-app__filters">
         <ng-container [formGroup]="filters">
-            <ng-container *ngFor="let category of unique | keyvalue">
+            <ng-container *ngFor="let category of categories | keyvalue">
                 <mat-form-field>
                     <mat-label>{{ category.key }}</mat-label>
                     <mat-select multiple [formControlName]="category.key">
