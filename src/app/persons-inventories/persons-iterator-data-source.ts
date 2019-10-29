@@ -2,7 +2,6 @@ import { defer, Observable, of } from 'rxjs';
 import { map, publishReplay, refCount } from 'rxjs/operators';
 import { Inject, Injectable } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-
 import {
     SteamPerson, toSteamId64, IteratorDataSource, IteratorPartition, IteratorPartitionSelector,
 } from 'sis';

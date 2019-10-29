@@ -2,10 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatProgressBarModule, MatFormFieldModule, MatInputModule, MatButtonModule } from '@angular/material';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+    MatProgressBarModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatSelectModule, MatOptionModule,
+} from '@angular/material';
 import {
     STEAM_CLIENT_CONFIG, SteamClient, SteamClientConfig, SteamPublicAPIExecutor, TagParsersManager,
     TAG_PARSERS_MANAGER_PLUGIN, CommonColorTagParserManagerPlugin, CommonNameTagParserManagerPlugin,
@@ -23,7 +24,7 @@ import { AppComponent } from './app.component';
     imports: [
         BrowserModule, BrowserAnimationsModule, FormsModule, ReactiveFormsModule, HttpClientModule, CommonModule,
 
-        MatProgressBarModule, MatInputModule, MatFormFieldModule, MatButtonModule,
+        MatProgressBarModule, MatInputModule, MatFormFieldModule, MatButtonModule, MatSelectModule, MatOptionModule,
     ],
     providers: [
         SteamClient,

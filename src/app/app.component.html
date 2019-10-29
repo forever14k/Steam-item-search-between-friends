@@ -29,6 +29,7 @@
     </div>
 </div>
 
+
 <ng-container *ngIf="active && results?.results?.length">
     <div class="sisbf-app__progress">
         <ng-container *ngIf="results.results[results.results.length - 1] as result">
@@ -56,5 +57,25 @@
             </div>
         </div>
         <mat-progress-bar mode="query"></mat-progress-bar>
+    </div>
+</ng-container>
+
+
+<ng-container *ngIf="unique?.size">
+    <div class="sisbf-app__filters">
+        <ng-container [formGroup]="filters">
+            <ng-container *ngFor="let category of unique | keyvalue">
+                <mat-form-field>
+                    <mat-label>{{ category.key }}</mat-label>
+                    <mat-select multiple [formControlName]="category.key">
+                        <ng-container *ngIf="category.value?.size">
+                            <ng-container *ngFor="let tag of category.value | keyvalue">
+                                <mat-option [value]="tag.key">{{ tag.key }}</mat-option>
+                            </ng-container>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+            </ng-container>
+        </ng-container>
     </div>
 </ng-container>

@@ -1,9 +1,7 @@
 import { Observer, of, throwError } from 'rxjs';
+import { SteamPerson, SteamClient } from 'sis';
 
-import { SteamClient } from '../client/steam-client';
-
-import { SteamPerson } from './person';
-import { createSteamPersonInventoryResultFactory } from './persons-inventories-iterator-config';
+import { createSteamPersonInventoryResultFactory } from './persons-inventories-iterator-result-factory';
 
 
 describe('createPersonsInventoryResultFactory', () => {

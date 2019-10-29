@@ -9,24 +9,11 @@ sisbf-app {
         &__inputs {
             display: grid;
             grid-template-columns: 3fr 2fr 2fr;
+            grid-gap: 10px;
 
             &-query, &-appid, &-contextid {
                 & > * {
                     width: 100%;
-                    padding: 0 5px;
-                    box-sizing: border-box;
-
-                }
-
-                &:first-of-type {
-                    & > * {
-                        padding-left: 0;
-                    }
-                }
-                &:last-of-type {
-                    & > * {
-                        padding-right: 0;
-                    }
                 }
             }
         }
@@ -43,6 +30,13 @@ sisbf-app {
                     padding-right: 0;
                 }
             }
+        }
+
+        &__filters {
+            padding-top: 10px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-gap: 10px;
         }
     }
 }

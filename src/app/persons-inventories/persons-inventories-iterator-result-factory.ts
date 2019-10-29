@@ -1,14 +1,10 @@
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-
-import { SteamInventory } from '../inventory/inventory';
 import {
-    ClosedInventoryError, NotFoundInventoryError, SteamClient, TooManyRequestsError, UnaccessibleInventoryError,
-} from '../client/steam-client';
+    ClosedInventoryError, IteratorResultFactory, NotFoundInventoryError, SteamClient, SteamInventory,
+    SteamPerson, TooManyRequestsError, UnaccessibleInventoryError,
+} from 'sis';
 
-import { SteamPerson } from './person';
-import { IteratorResultFactory } from '../../iterator/memoized-iterator';
-import { IteratorTrackBy } from '../../iterator/iterator-track-by';
 
 export function createSteamPersonInventoryResultFactory(
     steamClient: SteamClient, appId: number, contextId: number,
@@ -28,5 +24,3 @@ export function createSteamPersonInventoryResultFactory(
 }
 
 export type PersonInventoryResult = SteamInventory | ClosedInventoryError | NotFoundInventoryError | UnaccessibleInventoryError | Error;
-
-export const steamPersonTrackBy: IteratorTrackBy<SteamPerson> = person => person.id64;
