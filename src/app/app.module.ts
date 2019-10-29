@@ -10,7 +10,7 @@ import {
 import {
     STEAM_CLIENT_CONFIG, SteamClient, SteamClientConfig, SteamPublicAPIExecutor, TagParsersManager,
     TAG_PARSERS_MANAGER_PLUGIN, CommonColorTagParserManagerPlugin, CommonNameTagParserManagerPlugin,
-    CommonTradableTagParserManagerPlugin, CommonExistingItemTagParserManagerPlugin,
+    CommonTradableTagParserManagerPlugin, CommonExistingItemTagParserManagerPlugin, CommonImageTagParserManagerPlugin,
 } from 'sis';
 
 import { STEAM_MAX_RPM } from './app-config';
@@ -39,6 +39,7 @@ import { AppComponent } from './app.component';
             { provide: TAG_PARSERS_MANAGER_PLUGIN, multi: true, useClass: CommonTradableTagParserManagerPlugin },
             { provide: TAG_PARSERS_MANAGER_PLUGIN, multi: true, useClass: CommonColorTagParserManagerPlugin },
             { provide: TAG_PARSERS_MANAGER_PLUGIN, multi: true, useClass: CommonExistingItemTagParserManagerPlugin },
+            { provide: TAG_PARSERS_MANAGER_PLUGIN, multi: true, useClass: CommonImageTagParserManagerPlugin },
     ],
     bootstrap: [ AppComponent ],
 })

@@ -21,4 +21,8 @@ export const SIS_COMMON_TAGS_L10N = {
         },
     },
 
+    image: {
+        categoryName: 'Image',
+    },
+
 };

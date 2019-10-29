@@ -6,6 +6,7 @@ export namespace SisCommonTags {
         Name     = 'Name',
         Color    = 'Color',
         Tradable = 'Tradable',
+        Image    = 'Image',
     }
 
 }

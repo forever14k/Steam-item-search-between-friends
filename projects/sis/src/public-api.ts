@@ -31,3 +31,5 @@ export * from './common-tags-support/name/name';
 export * from './common-tags-support/name/parser';
 export * from './common-tags-support/tradable/tradable';
 export * from './common-tags-support/tradable/parser';
+export * from './common-tags-support/image/image';
+export * from './common-tags-support/image/parser';
