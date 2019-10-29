@@ -4,4 +4,6 @@
  */
 export const LANGUAGE = 'english';
 
+export const STEAM_API_BASE_URL = '//steamcommunity.com';
+
 export const STEAM_INVENTORY_API_PATH = 'inventory';

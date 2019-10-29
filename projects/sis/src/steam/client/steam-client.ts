@@ -8,7 +8,7 @@ import { subscribeOnExecutor } from '../../executor/subscribe-on-executor';
 import { SteamInventory } from '../inventory/inventory';
 import { dedupeInventoryEntities } from '../inventory/inventory-dedupe';
 
-import { LANGUAGE, STEAM_INVENTORY_API_PATH } from '../config';
+import { LANGUAGE, STEAM_INVENTORY_API_PATH, STEAM_API_BASE_URL } from '../config';
 import {
     STEAM_INVENTORY_COUNT_PARAM, STEAM_INVENTORY_START_ASSET_ID_PARAM, STEAM_LANGUAGE_PARAM,
 } from './steam-client-params';
@@ -25,7 +25,7 @@ export interface SteamClientInventoryConfig {
 }
 
 const STEAM_CLIENT_CONFIG_DEFAULTS: Partial<SteamClientConfig> = {
-    baseUrl: '//steamcommunity.com',
+    baseUrl: STEAM_API_BASE_URL,
     inventory: {
         itemsPerRequest: 5000,
     },
