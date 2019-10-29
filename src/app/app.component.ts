@@ -40,6 +40,7 @@ export class AppComponent implements OnDestroy {
     private _active: boolean = false;
     private _results: IterationsResults<SteamPerson, PersonInventoryResult> | null = null;
     private _categories: Map<SisTag['categoryName'], Map<SisTag['name'], SisTag>> | null = null;
+    private _filtered: [ SteamPerson, [ SteamInventoryAsset, SteamInventoryDescription, SisTag[] ][] ][] | null = null;
 
 
     constructor(private _fb: FormBuilder, private _steamClient: SteamClient,
@@ -57,6 +58,7 @@ export class AppComponent implements OnDestroy {
         this._results = null;
         this._categories = null;
         this._filters = this._fb.group({});
+        this._filtered = null;
 
         const factory = createSteamPersonInventoryResultFactory(this._steamClient, this._app.value.appId, this._app.value.contextId);
         const results =  new MemoizedIterator(this._dataSource, factory, steamPersonTrackBy)
@@ -205,11 +207,16 @@ export class AppComponent implements OnDestroy {
         );
 
         this._inventoriesSubscription.add(
-            filteredItems.subscribe(console.log),
+            filteredItems.subscribe(
+                filtered => this._filtered = filtered,
+            ),
         );
     }
 
 
+    get filtered(): [ SteamPerson, [ SteamInventoryAsset, SteamInventoryDescription, SisTag[] ][] ][] | null {
+        return this._filtered;
+    }
     get filters(): FormGroup {
         return this._filters;
     }
