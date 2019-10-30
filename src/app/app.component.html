@@ -1,20 +1,51 @@
 <div class="profile_friends title_bar">
-    <div class="profile_friends title">Search items between steam friends</div>
+    <div class="profile_friends title">{{ SISBF_APP_L10N.name }}</div>
 </div>
 
 <div class="profile_friends search_results">
     <div class="sisbf-app__app">
-        <div class="state_block" style="">App</div>
-        <div class="gray_bevel for_text_input sisbf-app__app-control">
-            <span class="sisbf-app__app-control--addon">Appid:</span>
-            <input size="4" placeholder='Appid'>
-        </div>
-        <div class="gray_bevel for_text_input sisbf-app__app-control">
-            <span class="sisbf-app__app-control--addon">Context:</span>
-            <input size="4" placeholder='Context'>
-        </div>
-        <button class="btn_medium btn_green_white_innerfade sisbf-app__app-control">
-            <span>Load inventories</span>
+        <div class="state_block" style="">{{ SISBF_APP_L10N.app.sectionName }}</div>
+        <ng-container [formGroup]="app">
+            <div class="gray_bevel for_text_input sisbf-app__app-control">
+                <!-- TODO: use css for ':' -->
+                <span class="sisbf-app__app-control--addon">{{ SISBF_APP_L10N.app.appId.addon }}:</span>
+                <input size="4" [attr.placeholder]="SISBF_APP_L10N.app.appId.placeholder" formControlName="appId">
+            </div>
+            <div class="gray_bevel for_text_input sisbf-app__app-control">
+                <!-- TODO: use css for ':' -->
+                <span class="sisbf-app__app-control--addon">{{ SISBF_APP_L10N.app.contextId.addon }}:</span>
+                <input size="4" [attr.placeholder]="SISBF_APP_L10N.app.contextId.placeholder" formControlName="contextId">
+            </div>
+        </ng-container>
+        <button class="btn_medium sisbf-app__app-control" [ngClass]="{
+                    'btn_green_white_innerfade': !this.active && (!results || results.total > results.results.length),
+                    'btn_blue_white_innerfade': this.active,
+                    'btn_darkblue_white_innerfade': !this.active && results && results.results.length >= results.total
+                }"
+                (click)="onLoadInventories()">
+            <!-- TODO: use ICU message format -->
+            <span>
+                <span class="sisbf-app__app-load--label">{{ SISBF_APP_L10N.app.loadInventories.label }}</span>
+                <ng-container *ngIf="results">
+                    <!-- TODO: use ICU message format -->
+                    <span class="sisbf-app__app-load--counter">({{ results.results.length }}/{{ results.total }})</span>
+                </ng-container>
+            </span>
         </button>
     </div>
+
+
+    <ng-container *ngIf="results">
+        <div class="sisbf-app__filters">
+            <div class="state_block" style="">{{ SISBF_APP_L10N.filters.sectionName }}</div>
+            <div class="gray_bevel for_text_input sisbf-app__filters-control">
+                <input size="50" [attr.placeholder]="SISBF_APP_L10N.filters.name.placeholder" [formControl]="name">
+            </div>
+            <button class="btn_medium btn_green_white_innerfade sisbf-app__filters-control" (click)="onSearch()">
+                <span>
+                    <span class="sisbf-app__filters-search--label">{{ SISBF_APP_L10N.filters.search.label }}</span>
+                </span>
+            </button>
+        </div>
+    </ng-container>
 </div>

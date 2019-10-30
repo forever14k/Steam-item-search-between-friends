@@ -2,12 +2,28 @@
     margin-bottom: 8px;
     display: block;
 
+    &__app, &__filters {
+        display: block;
+        width: 100%;
+    }
+
     &__app {
         &-control {
             margin: 0 10px 0 0;
             &--addon {
                 padding-right: 5px;
             }
+        }
+        &-load {
+            &--counter {
+                padding-left: 5px;
+            }
+        }
+    }
+
+    &__filters {
+        &-control {
+            margin: 0 10px 0 0;
         }
     }
 }

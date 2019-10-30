@@ -8,10 +8,12 @@ import {
     STEAM_CLIENT_CONFIG, SteamClient, SteamClientConfig, SteamPublicAPIExecutor, TagParsersManager,
     TAG_PARSERS_MANAGER_PLUGIN, CommonColorTagParserManagerPlugin, CommonNameTagParserManagerPlugin,
     CommonTradableTagParserManagerPlugin, CommonExistingItemTagParserManagerPlugin, CommonImageTagParserManagerPlugin,
+    SisSettingsService,
 } from 'sis';
 
 import { STEAM_MAX_RPM } from './app-config';
 import { AppComponent } from './app.component';
+import { CookieService } from 'ngx-cookie-service';
 
 
 @NgModule({
@@ -22,6 +24,8 @@ import { AppComponent } from './app.component';
         BrowserModule, BrowserAnimationsModule, FormsModule, ReactiveFormsModule, HttpClientModule, CommonModule,
     ],
     providers: [
+        SisSettingsService,
+            CookieService,
         SteamClient,
             {
                 provide: STEAM_CLIENT_CONFIG,

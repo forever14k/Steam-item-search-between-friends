@@ -1,22 +1,30 @@
-import { Subscription } from 'rxjs';
-import { finalize, publishReplay, refCount, takeUntil } from 'rxjs/operators';
+import { Observable, Subject, Subscription } from 'rxjs';
+import { map, publishReplay, refCount } from 'rxjs/operators';
 import { Component, HostBinding, Inject, OnDestroy } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import {
-    SteamClient, IterationsResults, SteamPerson, MemoizedIterator, TagParsersManager, SisTag,
+    SteamClient, IterationsResults, SteamPerson, MemoizedIterator, SisSettingsService,
+    SisSettings, SisTag, TagParsersManager, SisCommonTags,
 } from 'sis';
 
-import { STEAM_MAX_RPM } from './app-config';
+import { SISBF_APP_L10N } from './app.l10n';
+// import { STEAM_MAX_RPM } from './app-config';
 import { steamPersonTrackBy } from './persons-inventories/person-iterator-track-by';
 import { SteamPersonsIteratorDataSource } from './persons-inventories/persons-iterator-data-source';
+
 import {
     PersonInventoryResult, createSteamPersonInventoryResultFactory,
 } from './persons-inventories/persons-inventories-iterator-result-factory';
-
 import { ParsedSteamInventory, parseInventories } from './persons-inventories/utils/parse-inventories-items';
 import { getInventoriesFiltersScheme } from './persons-inventories/utils/get-inventories-filters-scheme';
-import { filterInventories } from './persons-inventories/utils/filter-inventories';
+import {
+    createItemsFilterFactory, defaultTagMatcherFactory,
+    filterInventories, ItemsFilterFactory, ParsedInventoriesFilters
+} from './persons-inventories/utils/filter-inventories';
+// import { ParsedSteamInventory, parseInventories } from './persons-inventories/utils/parse-inventories-items';
+// import { getInventoriesFiltersScheme } from './persons-inventories/utils/get-inventories-filters-scheme';
+// import { filterInventories } from './persons-inventories/utils/filter-inventories';
 
 
 @Component({
@@ -28,108 +36,142 @@ export class AppComponent implements OnDestroy {
 
     @HostBinding('class.sisbf-app') readonly className = true;
 
-    readonly STEAM_MAX_RPM = STEAM_MAX_RPM;
+    readonly SISBF_APP_L10N = SISBF_APP_L10N;
 
-    private _query: FormControl = this._fb.control('');
 
     private _app: FormGroup = this._fb.group({
         appId:     this._fb.control('', Validators.required),
         contextId: this._fb.control('', Validators.required),
     });
 
-    private _filters: FormGroup = this._fb.group({});
+    private _name: FormControl = this._fb.control('');
 
+    private _filters: FormGroup = this._fb.group({});
+    private _filtersScheme: Map<SisTag['categoryName'], Map<SisTag['name'], SisTag>> | null = null;
+
+
+    private _settingsSubscription: Subscription = Subscription.EMPTY;
     private _inventoriesSubscription: Subscription = Subscription.EMPTY;
     private _dataSource: SteamPersonsIteratorDataSource = new SteamPersonsIteratorDataSource(this._document);
+    private _onSearch: Subject<void> = new Subject();
 
-    private _active: boolean = false;
+    private _iterator: MemoizedIterator<SteamPerson, PersonInventoryResult> | null = null;
     private _results: IterationsResults<SteamPerson, PersonInventoryResult> | null = null;
-    private _categories: Map<SisTag['categoryName'], Map<SisTag['name'], SisTag>> | null = null;
-    private _filtered: ParsedSteamInventory[] | null = null;
+    private _filteredResults: ParsedSteamInventory[] | null = null;
 
 
     constructor(private _fb: FormBuilder, private _steamClient: SteamClient,
-                private _tagParser: TagParsersManager,
+                private _settings: SisSettingsService, private _tagParser: TagParsersManager,
                 @Inject(DOCUMENT) private _document: Document) {
-    }
 
-
-    onSearch() {
-        console.log('search', this._app.value);
-    }
-
-    onLoadInventories() {
-        this._active = true;
-        this._results = null;
-        this._categories = null;
-        this._filters = this._fb.group({});
-        this._filtered = null;
-
-        const factory = createSteamPersonInventoryResultFactory(this._steamClient, this._app.value.appId, this._app.value.contextId);
-        const results =  new MemoizedIterator(this._dataSource, factory, steamPersonTrackBy)
-            .getResults()
-            .pipe(
-                finalize(() => {
-                    this._active = false;
-                }),
-                publishReplay(1), refCount(),
-                takeUntil(this._app.valueChanges),
-            );
-
-        this._inventoriesSubscription.unsubscribe();
-        this._inventoriesSubscription = new Subscription();
-
-
-        const parsedInventories = parseInventories(results, this._tagParser);
-        const filteredParsedInventories = filterInventories(parsedInventories, this._filters.valueChanges);
-        const uniqueCategories = getInventoriesFiltersScheme(parsedInventories);
-
-
-        this._inventoriesSubscription.add(
-            results.subscribe(result => {
-                this._results = result;
-            }),
+        this._settingsSubscription = this._settings.getSettings().subscribe(
+            (settings: SisSettings | null) => this._app.setValue(settings || {}, { emitEvent: false }),
         );
 
-        this._inventoriesSubscription.add(
-            uniqueCategories.subscribe(categories => {
-                this._categories = categories;
-                for (const category of categories.keys()) {
-                    if (!this._filters.contains(category)) {
-                        this._filters.registerControl(category, this._fb.control(null));
-                    }
-                }
-            }),
-        );
-
-        this._inventoriesSubscription.add(
-            filteredParsedInventories.subscribe(
-                filtered => {
-                    this._filtered = filtered;
-                    console.log(filtered);
+        this._settingsSubscription.add(
+            this._app.valueChanges.subscribe(
+                (settings: SisSettings | null) => {
+                    this._settings.setSettings(settings);
+                    this._inventoriesSubscription.unsubscribe();
+                    this._results = null;
+                    this._iterator = null;
+                    this._filters = this._fb.group({});
+                    this._name = this._fb.control('');
+                    this._filtersScheme = null;
                 },
             ),
         );
     }
 
 
-    get filtered(): ParsedSteamInventory[] | null {
-        return this._filtered;
+    onSearch() {
+        this._onSearch.next();
     }
-    get filters(): FormGroup {
-        return this._filters;
+
+    onLoadInventories() {
+        if (this._results && this._results.results.length === this._results.total) {
+            return;
+        }
+
+        if (!this._inventoriesSubscription.closed) {
+            this._inventoriesSubscription.unsubscribe();
+            return;
+        }
+
+        if (!this._iterator) {
+            const factory = createSteamPersonInventoryResultFactory(this._steamClient, this._app.value.appId, this._app.value.contextId);
+            this._iterator = new MemoizedIterator(this._dataSource, factory, steamPersonTrackBy);
+        }
+
+        const results = this._iterator.getResults().pipe(
+            publishReplay(1), refCount(),
+        );
+
+        this._inventoriesSubscription = new Subscription();
+
+        this._inventoriesSubscription.add(
+            results.subscribe(result => this._results = result),
+        );
+
+
+        const parsedInventories = parseInventories(results, this._tagParser);
+
+
+        this._inventoriesSubscription.add(
+            getInventoriesFiltersScheme(parsedInventories).subscribe(scheme => {
+                this._filtersScheme = scheme;
+                for (const categoryName of scheme.keys()) {
+                    if (!this._filters.contains(categoryName)) {
+                        this._filters.registerControl(categoryName, this._fb.control(null));
+                    }
+                }
+            }),
+        );
+
+
+        const filters: Observable<ParsedInventoriesFilters> = this._onSearch.pipe(
+            map(() => {
+                return {
+                    ...this._filters.value ? this._filters.value : {},
+                    [SisCommonTags.KindEnum.Name]: this._name.value ? [ this._name.value ] : null,
+                };
+            }),
+        );
+        const filtersFactory: ItemsFilterFactory = createItemsFilterFactory({
+            tagMatcherFactory: (categoryName: SisTag['categoryName'], names: SisTag['name'][]) => {
+                if (categoryName === SisCommonTags.KindEnum.Name) {
+                    console.log(categoryName, names);
+                    return () => true;
+                }
+                return defaultTagMatcherFactory(categoryName, names);
+            },
+        });
+
+        this._inventoriesSubscription.add(
+            filterInventories(parsedInventories, filters, filtersFactory).subscribe(
+                filtered => this._filteredResults = filtered,
+            ),
+        );
     }
-    get categories(): Map<SisTag['categoryName'], Map<SisTag['name'], SisTag>> | null {
-        return this._categories;
+
+
+    get filteredResults(): ParsedSteamInventory[] | null {
+        return this._filteredResults;
     }
     get results(): IterationsResults<SteamPerson, PersonInventoryResult> | null {
         return this._results;
     }
     get active(): boolean {
-        return this._active;
+        return !this._inventoriesSubscription.closed;
     }
-    get query(): FormControl {
-        return this._query;
+    get filtersScheme(): Map<SisTag['categoryName'], Map<SisTag['name'], SisTag>> | null {
+        return this._filtersScheme;
+    }
+    get filters(): FormGroup {
+        return this._filters;
+    }
+    get name(): FormControl {
+        return this._name;
     }
     get app(): FormGroup {
         return this._app;
@@ -137,6 +179,7 @@ export class AppComponent implements OnDestroy {
 
 
     ngOnDestroy() {
+        this._settingsSubscription.unsubscribe();
         this._inventoriesSubscription.unsubscribe();
     }
 
