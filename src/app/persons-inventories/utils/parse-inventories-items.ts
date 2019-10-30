@@ -1,12 +1,29 @@
-import { EMPTY, forkJoin, Observable } from 'rxjs';
+import { EMPTY, forkJoin, Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { getInventoryEntityId, SteamInventoryAsset, SteamInventoryDescription, SisTag, SteamPerson, TagParsersManager } from 'sis';
+import {
+    getInventoryEntityId, SteamInventoryAsset, SteamInventoryDescription, SisTag, SteamPerson, TagParsersManager,
+    IterationsResults,
+} from 'sis';
 
-import { NewSteamInventory } from './get-new-inventories';
+import { PersonInventoryResult } from '../persons-inventories-iterator-result-factory';
 
 
-export function parseInventoryItems(source: Observable<NewSteamInventory>, parser: TagParsersManager): Observable<ParsedSteamInventory> {
+export function parseInventories(source: Observable<IterationsResults<SteamPerson, PersonInventoryResult>>,
+                                 parser: TagParsersManager): Observable<ParsedSteamInventory> {
+
     return source.pipe(
+        switchMap((result: IterationsResults<SteamPerson, PersonInventoryResult>) => {
+            if (result.results && result.results.length) {
+                const lastResult = result.results[ result.results.length - 1 ];
+                if (!(lastResult.result instanceof Error)) {
+                    return of({
+                        person:    lastResult.entity,
+                        inventory: lastResult.result,
+                    });
+                }
+            }
+            return EMPTY;
+        }),
         switchMap(({ person, inventory }) => {
             if (inventory.assets && inventory.assets.length && inventory.descriptions && inventory.descriptions.length) {
                 const order = inventory.assets.map(asset => getInventoryEntityId(asset));
@@ -15,26 +32,26 @@ export function parseInventoryItems(source: Observable<NewSteamInventory>, parse
                     [ getInventoryEntityId(description), description ],
                 ));
                 return forkJoin(
-                    order.map(id => {
-                        const asset = assets.get(id);
-                        const description = descriptions.get(id);
-                        return parser.parse(descriptions.get(id), assets.get(id)).pipe(
-                            map(tags => {
-                                return {
-                                    asset: asset,
-                                    description: description,
-                                    tags: tags,
-                                } as ParsedSteamInventoryItem;
-                            }),
-                        );
-                    }),
-                )
+                        order.map(id => {
+                            const asset = assets.get(id);
+                            const description = descriptions.get(id);
+                            return parser.parse(description, asset).pipe(
+                                map(tags => {
+                                    return {
+                                        asset:       asset,
+                                        description: description,
+                                        tags:        tags,
+                                    } as ParsedSteamInventoryItem;
+                                }),
+                            );
+                        }),
+                    )
                     .pipe(
                         map(items => {
                             return {
                                 person: person,
-                                items: items,
-                            } as ParsedSteamInventory;
+                                items:  items,
+                            };
                         }),
                     );
             }
@@ -43,6 +60,7 @@ export function parseInventoryItems(source: Observable<NewSteamInventory>, parse
         }),
     );
 }
+
 
 export interface ParsedSteamInventory {
     person: SteamPerson;

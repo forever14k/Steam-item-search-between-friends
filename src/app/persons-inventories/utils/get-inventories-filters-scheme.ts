@@ -5,7 +5,7 @@ import { SisTag } from 'sis';
 import { ParsedSteamInventory } from './parse-inventories-items';
 
 
-export function getUniqueCategories(
+export function getInventoriesFiltersScheme(
     source: Observable<ParsedSteamInventory>): Observable<Map<SisTag['categoryName'], Map<SisTag['name'], SisTag>>> {
 
     return source.pipe(

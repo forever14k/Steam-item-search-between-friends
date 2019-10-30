@@ -14,11 +14,9 @@ import {
     PersonInventoryResult, createSteamPersonInventoryResultFactory,
 } from './persons-inventories/persons-inventories-iterator-result-factory';
 
-import { getNewInventories } from './persons-inventories/utils/get-new-inventories';
-import { ParsedSteamInventory, parseInventoryItems } from './persons-inventories/utils/parse-inventories-items';
-import { collectInventories } from './persons-inventories/utils/collect-inventories';
-import { getUniqueCategories } from './persons-inventories/utils/get-unique-categories';
-import { filterAllParsedInventories } from './persons-inventories/utils/filter-all-parsed-inventories';
+import { ParsedSteamInventory, parseInventories } from './persons-inventories/utils/parse-inventories-items';
+import { getInventoriesFiltersScheme } from './persons-inventories/utils/get-inventories-filters-scheme';
+import { filterInventories } from './persons-inventories/utils/filter-inventories';
 
 
 @Component({
@@ -80,12 +78,9 @@ export class AppComponent implements OnDestroy {
         this._inventoriesSubscription = new Subscription();
 
 
-        const newInventories = getNewInventories(results);
-        const parsedInventories = parseInventoryItems(newInventories, this._tagParser);
-        const allParsedInventories = collectInventories(parsedInventories);
-
-        const filteredParsedInventories = filterAllParsedInventories(allParsedInventories, this._filters.valueChanges);
-        const uniqueCategories = getUniqueCategories(parsedInventories);
+        const parsedInventories = parseInventories(results, this._tagParser);
+        const filteredParsedInventories = filterInventories(parsedInventories, this._filters.valueChanges);
+        const uniqueCategories = getInventoriesFiltersScheme(parsedInventories);
 
 
         this._inventoriesSubscription.add(
