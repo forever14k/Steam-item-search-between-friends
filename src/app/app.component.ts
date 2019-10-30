@@ -9,7 +9,6 @@ import {
 } from 'sis';
 
 import { SISBF_APP_L10N } from './app.l10n';
-// import { STEAM_MAX_RPM } from './app-config';
 import { steamPersonTrackBy } from './persons-inventories/person-iterator-track-by';
 import { SteamPersonsIteratorDataSource } from './persons-inventories/persons-iterator-data-source';
 
@@ -20,11 +19,8 @@ import { ParsedSteamInventory, parseInventories } from './persons-inventories/ut
 import { getInventoriesFiltersScheme } from './persons-inventories/utils/get-inventories-filters-scheme';
 import {
     createItemsFilterFactory, defaultTagMatcherFactory,
-    filterInventories, ItemsFilterFactory, ParsedInventoriesFilters
+    filterInventories, ItemsFilterFactory, ParsedInventoriesFilters,
 } from './persons-inventories/utils/filter-inventories';
-// import { ParsedSteamInventory, parseInventories } from './persons-inventories/utils/parse-inventories-items';
-// import { getInventoriesFiltersScheme } from './persons-inventories/utils/get-inventories-filters-scheme';
-// import { filterInventories } from './persons-inventories/utils/filter-inventories';
 
 
 @Component({
