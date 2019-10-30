@@ -5,6 +5,7 @@
         "@angular/core": "8.2.9",
         "@angular/common": "8.2.9",
         "rxjs": "6.4.0",
-        "big.js": "5.0.2"
+        "big.js": "5.0.2",
+        "ngx-cookie-service": "2.2.0"
     }
 }

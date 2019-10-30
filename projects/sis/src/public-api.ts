@@ -2,6 +2,8 @@
  * Public API Surface of sis
  */
 
+export * from './settings/settings.service';
+
 export * from './executor/executor';
 export * from './executor/subscribe-on-executor';
 export * from './executor/immediate-executor';
