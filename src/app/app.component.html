@@ -1,81 +1,20 @@
-<div class="sisbf-app__inputs">
-    <div class="sisbf-app__inputs-query">
-        <mat-form-field>
-            <input matInput placeholder="Enter name" [formControl]="query">
-        </mat-form-field>
-    </div>
-    <ng-container [formGroup]="app">
-        <div class="sisbf-app__inputs-appid">
-            <mat-form-field>
-                <input matInput placeholder="Appid" formControlName="appId">
-                <mat-error *ngIf="app.controls.appId?.errors?.required">Appid is required</mat-error>
-            </mat-form-field>
-        </div>
-        <div class="sisbf-app__inputs-contextid">
-            <mat-form-field>
-                <input matInput placeholder="Context" formControlName="contextId">
-                <mat-error *ngIf="app.controls.contextId?.errors?.required">Contextid is required</mat-error>
-            </mat-form-field>
-        </div>
-    </ng-container>
+<div class="profile_friends title_bar">
+    <div class="profile_friends title">Search items between steam friends</div>
 </div>
 
-<div class="sisbf-app__controls">
-    <div class="sisbf-app__controls-search">
-        <button mat-raised-button color="primary" (click)="onSearch()">Search</button>
-    </div>
-    <div class="sisbf-app__controls-load">
-        <button mat-raised-button color="primary" (click)="onLoadInventories()">Load inventories</button>
+<div class="profile_friends search_results">
+    <div class="sisbf-app__app">
+        <div class="state_block" style="">App</div>
+        <div class="gray_bevel for_text_input sisbf-app__app-control">
+            <span class="sisbf-app__app-control--addon">Appid:</span>
+            <input size="4" placeholder='Appid'>
+        </div>
+        <div class="gray_bevel for_text_input sisbf-app__app-control">
+            <span class="sisbf-app__app-control--addon">Context:</span>
+            <input size="4" placeholder='Context'>
+        </div>
+        <button class="btn_medium btn_green_white_innerfade sisbf-app__app-control">
+            <span>Load inventories</span>
+        </button>
     </div>
 </div>
-
-
-<ng-container *ngIf="active && results?.results?.length">
-    <div class="sisbf-app__progress">
-        <ng-container *ngIf="results.results[results.results.length - 1] as result">
-            <ng-container *ngIf="result.entity as person">
-                <div class="sisbf-app__progress-person">
-                    <div class="sisbf-app__progress-person__avatar">
-                        <img [src]="person.avatarUrl" [attr.alt]="person.name">
-                    </div>
-                    <div class="sisbf-app__progress-person__name">
-                        <span>{{ person.name }}</span>
-                    </div>
-                </div>
-            </ng-container>
-        </ng-container>
-        <div class="sisbf-app__progress-status">
-            <div class="sisbf-app__progress-status__count">
-                <span>{{ results.results.length }} / {{ results.total }}</span>
-            </div>
-            <div class="sisbf-app__progress-status__percent">
-                <span>{{ results.results.length / results.total | percent }}</span>
-            </div>
-            <div class="sisbf-app__progress-status__time">
-                <!-- TODO: ETA -->
-                <span>{{ (results.total - results.results.length) * ((1000 * 60) / STEAM_MAX_RPM) }}</span>
-            </div>
-        </div>
-        <mat-progress-bar mode="query"></mat-progress-bar>
-    </div>
-</ng-container>
-
-
-<ng-container *ngIf="categories?.size">
-    <div class="sisbf-app__filters">
-        <ng-container [formGroup]="filters">
-            <ng-container *ngFor="let category of categories | keyvalue">
-                <mat-form-field>
-                    <mat-label>{{ category.key }}</mat-label>
-                    <mat-select multiple [formControlName]="category.key">
-                        <ng-container *ngIf="category.value?.size">
-                            <ng-container *ngFor="let tag of category.value | keyvalue">
-                                <mat-option [value]="tag.key">{{ tag.key }}</mat-option>
-                            </ng-container>
-                        </ng-container>
-                    </mat-select>
-                </mat-form-field>
-            </ng-container>
-        </ng-container>
-    </div>
-</ng-container>

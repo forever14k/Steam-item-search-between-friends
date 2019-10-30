@@ -1,46 +1,13 @@
-sisbf-app {
+.sisbf-app {
+    margin-bottom: 8px;
     display: block;
-    padding: 10px;
-    margin-bottom: 10px;
 
-    background-color: #015e80;
-
-    .sisbf-app {
-        &__inputs {
-            display: grid;
-            grid-template-columns: 3fr 2fr 2fr;
-            grid-gap: 10px;
-
-            &-query, &-appid, &-contextid {
-                & > * {
-                    width: 100%;
-                }
+    &__app {
+        &-control {
+            margin: 0 10px 0 0;
+            &--addon {
+                padding-right: 5px;
             }
-        }
-
-        &__controls {
-            &-search, &-load {
-                padding: 0 5px;
-                display: inline-block;
-
-                &:first-of-type {
-                    padding-left: 0;
-                }
-                &:last-of-type {
-                    padding-right: 0;
-                }
-            }
-        }
-
-        &__filters {
-            padding-top: 10px;
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            grid-gap: 10px;
         }
     }
-}
-
-body {
-    background-color: black;
 }

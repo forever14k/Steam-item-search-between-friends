@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs';
 import { finalize, publishReplay, refCount, takeUntil } from 'rxjs/operators';
-import { Component, Inject, OnDestroy } from '@angular/core';
+import { Component, HostBinding, Inject, OnDestroy } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import {
@@ -25,6 +25,8 @@ import { filterInventories } from './persons-inventories/utils/filter-inventorie
     styleUrls: ['./app.component.less'],
 })
 export class AppComponent implements OnDestroy {
+
+    @HostBinding('class.sisbf-app') readonly className = true;
 
     readonly STEAM_MAX_RPM = STEAM_MAX_RPM;
 
