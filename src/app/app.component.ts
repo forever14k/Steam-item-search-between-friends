@@ -16,7 +16,9 @@ import {
     PersonInventoryResult, createSteamPersonInventoryResultFactory,
 } from './persons-inventories/persons-inventories-iterator-result-factory';
 import { ParsedSteamInventory, parseInventories } from './persons-inventories/utils/parse-inventories-items';
-import { getInventoriesFiltersScheme } from './persons-inventories/utils/get-inventories-filters-scheme';
+import {
+    getInventoriesFiltersScheme, InventoriesFiltersScheme,
+} from './persons-inventories/utils/get-inventories-filters-scheme';
 import { filterInventories, ParsedInventoryItemsFilter } from './persons-inventories/utils/filter-inventories';
 import { createParsedInventoryItemsFilter } from './persons-inventories/utils/inventory-items-filter';
 
@@ -41,13 +43,19 @@ export class AppComponent implements OnDestroy {
     private _name: FormControl = this._fb.control('');
 
     private _filters: FormGroup = this._fb.group({});
-    private _filtersScheme: Map<SisTag['categoryName'], Map<SisTag['name'], SisTag>> | null = null;
+    private _excludeFilters: Set<SisTag['kind']> = new Set([
+        SisCommonTags.KindEnum.Name,
+        SisCommonTags.KindEnum.Image,
+        SisCommonTags.KindEnum.Color,
+    ]);
+    private _filtersScheme: InventoriesFiltersScheme | null = null;
 
 
     private _settingsSubscription: Subscription = Subscription.EMPTY;
     private _inventoriesSubscription: Subscription = Subscription.EMPTY;
     private _dataSource: SteamPersonsIteratorDataSource = new SteamPersonsIteratorDataSource(this._document);
     private _onSearch: Subject<void> = new Subject();
+    private _inventoryItemsFilter: Observable<ParsedInventoryItemsFilter>;
 
     private _iterator: MemoizedIterator<SteamPerson, PersonInventoryResult> | null = null;
     private _results: IterationsResults<SteamPerson, PersonInventoryResult> | null = null;
@@ -75,6 +83,18 @@ export class AppComponent implements OnDestroy {
                 },
             ),
         );
+
+        this._inventoryItemsFilter = createParsedInventoryItemsFilter(this._onSearch.pipe(
+            map(() => {
+                const name = (this._name.value as string || '').toLowerCase();
+                return {
+                    ...this._filters.value ? this._filters.value : {},
+                    [SisCommonTags.KindEnum.Name]: (tag: CommonNameSisTag) => {
+                        return !name || (tag.name && tag.name.toLowerCase().includes(name));
+                    },
+                };
+            }),
+        ));
     }
 
 
@@ -100,6 +120,7 @@ export class AppComponent implements OnDestroy {
         const results = this._iterator.getResults().pipe(
             publishReplay(1), refCount(),
         );
+        const parsedInventories = parseInventories(results, this._tagParser);
 
         this._inventoriesSubscription = new Subscription();
 
@@ -107,36 +128,20 @@ export class AppComponent implements OnDestroy {
             results.subscribe(result => this._results = result),
         );
 
-
-        const parsedInventories = parseInventories(results, this._tagParser);
-
-
         this._inventoriesSubscription.add(
             getInventoriesFiltersScheme(parsedInventories).subscribe(scheme => {
                 this._filtersScheme = scheme;
-                for (const categoryName of scheme.keys()) {
-                    if (!this._filters.contains(categoryName)) {
-                        this._filters.registerControl(categoryName, this._fb.control(null));
+                for (const category of scheme.categories) {
+                    if (!this._excludeFilters.has(category.kind) && !this._filters.contains(category.categoryName)) {
+                        this._filters.registerControl(category.categoryName, this._fb.control(null));
                     }
                 }
+                console.log(scheme, this._filters);
             }),
         );
 
-
-        const filters: Observable<ParsedInventoryItemsFilter> = createParsedInventoryItemsFilter(this._onSearch.pipe(
-            map(() => {
-                const name = (this._name.value as string || '').toLowerCase();
-                return {
-                    ...this._filters.value ? this._filters.value : {},
-                    [SisCommonTags.KindEnum.Name]: (tag: CommonNameSisTag) => {
-                        return !name || (tag.name && tag.name.toLowerCase().includes(name));
-                    },
-                };
-            }),
-        ));
-
         this._inventoriesSubscription.add(
-            filterInventories(parsedInventories, filters).subscribe(
+            filterInventories(parsedInventories, this._inventoryItemsFilter).subscribe(
                 filtered => this._filteredResults = filtered,
             ),
         );
@@ -152,7 +157,7 @@ export class AppComponent implements OnDestroy {
     get active(): boolean {
         return !this._inventoriesSubscription.closed;
     }
-    get filtersScheme(): Map<SisTag['categoryName'], Map<SisTag['name'], SisTag>> | null {
+    get filtersScheme(): InventoriesFiltersScheme | null {
         return this._filtersScheme;
     }
     get filters(): FormGroup {

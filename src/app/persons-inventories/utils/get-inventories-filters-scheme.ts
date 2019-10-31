@@ -5,9 +5,7 @@ import { SisTag } from 'sis';
 import { ParsedSteamInventory } from './parse-inventories-items';
 
 
-export function getInventoriesFiltersScheme(
-    source: Observable<ParsedSteamInventory>): Observable<Map<SisTag['categoryName'], Map<SisTag['name'], SisTag>>> {
-
+export function getInventoriesFiltersScheme(source: Observable<ParsedSteamInventory>): Observable<InventoriesFiltersScheme> {
     return source.pipe(
         scan(
             (result, inventory: ParsedSteamInventory) => {
@@ -15,22 +13,38 @@ export function getInventoriesFiltersScheme(
                     for (const item of inventory.items) {
                         if (item.tags && item.tags.length) {
                             for (const tag of item.tags) {
-                                let category = result.get(tag.categoryName);
+                                let category = result.categories.find(existing =>
+                                    existing.categoryName === tag.categoryName && existing.kind === tag.kind,
+                                );
                                 if (!category) {
-                                    category = new Map();
+                                    category = {
+                                        kind:         tag.kind,
+                                        categoryName: tag.categoryName,
+                                        items:        [],
+                                    };
+                                    result.categories.push(category);
                                 }
-                                if (!category.has(tag.name)) {
-                                    category.set(tag.name, tag);
+                                const item = category.items.find(existing => existing.name === tag.name);
+                                if (!item) {
+                                    category.items.push(tag);
                                 }
-                                result.set(tag.categoryName, category);
                             }
                         }
                     }
                 }
                 return result;
             },
-            new Map<SisTag['categoryName'], Map<SisTag['name'], SisTag>>(),
+            { categories: [] } as InventoriesFiltersScheme,
         ),
     );
 }
 
+export interface InventoriesFiltersScheme {
+    categories: InventoriesFiltersSchemeCategory[];
+}
+
+export interface InventoriesFiltersSchemeCategory {
+    kind: SisTag['kind'];
+    categoryName: SisTag['categoryName'];
+    items: SisTag[];
+}
