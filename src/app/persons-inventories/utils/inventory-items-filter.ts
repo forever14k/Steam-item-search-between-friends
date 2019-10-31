@@ -13,7 +13,7 @@ export function createParsedInventoryItemsFilter(
     return filters.pipe(
         map(filters => {
             const filtersFns = Object.entries(filters)
-                .filter(([ , filter ]) => Boolean(filter))
+                .filter(([ , filter ]) => typeof(filter) === 'function' || (Array.isArray(filter) && filter.length))
                 .map(([ categoryName, filter ]) => {
                     return typeof(filter) === 'function' ? filter : createFilterFn(categoryName, filter);
                 });

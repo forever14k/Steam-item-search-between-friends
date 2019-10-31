@@ -35,17 +35,37 @@
     </div>
 
 
-    <ng-container *ngIf="results">
+    <ng-container *ngIf="results?.results?.length">
         <div class="sisbf-app__filters">
             <div class="state_block" style="">{{ SISBF_APP_L10N.filters.sectionName }}</div>
-            <div class="gray_bevel for_text_input sisbf-app__filters-control">
-                <input size="50" [attr.placeholder]="SISBF_APP_L10N.filters.name.placeholder" [formControl]="name">
-            </div>
-            <button class="btn_medium btn_green_white_innerfade sisbf-app__filters-control" (click)="onSearch()">
+            <div class="sisbf-app__filters-name">
+                <div class="gray_bevel for_text_input sisbf-app__filters-control">
+                    <input size="50" [attr.placeholder]="SISBF_APP_L10N.filters.name.placeholder" [formControl]="name">
+                </div>
+                <button class="btn_medium btn_green_white_innerfade sisbf-app__filters-control" (click)="onSearch()">
                 <span>
                     <span class="sisbf-app__filters-search--label">{{ SISBF_APP_L10N.filters.search.label }}</span>
                 </span>
-            </button>
+                </button>
+            </div>
+            <ng-container *ngIf="filtersScheme?.categories?.length">
+                <ng-container [formGroup]="filters">
+                    <div class="sisbf-app__filters-others">
+                        <ng-container *ngFor="let category of filtersScheme.categories">
+                            <div class="sisbf-app__filters-others__control">
+                                <label>{{ category.categoryName }}</label>
+                                <ng-select
+                                    [items]="category?.items || []"
+                                    [multiple]="true"
+                                    [searchable]="true"
+                                    bindLabel="name" bindValue="name"
+                                    [formControlName]="category.categoryName">
+                                </ng-select>
+                            </div>
+                        </ng-container>
+                    </div>
+                </ng-container>
+            </ng-container>
         </div>
     </ng-container>
 </div>

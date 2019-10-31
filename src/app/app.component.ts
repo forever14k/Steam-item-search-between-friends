@@ -130,13 +130,15 @@ export class AppComponent implements OnDestroy {
 
         this._inventoriesSubscription.add(
             getInventoriesFiltersScheme(parsedInventories).subscribe(scheme => {
+                scheme = {
+                    categories: scheme.categories.filter(category => !this._excludeFilters.has(category.kind)),
+                };
                 this._filtersScheme = scheme;
                 for (const category of scheme.categories) {
-                    if (!this._excludeFilters.has(category.kind) && !this._filters.contains(category.categoryName)) {
+                    if (!this._filters.contains(category.categoryName)) {
                         this._filters.registerControl(category.categoryName, this._fb.control(null));
                     }
                 }
-                console.log(scheme, this._filters);
             }),
         );
 

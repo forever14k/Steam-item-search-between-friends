@@ -25,5 +25,21 @@
         &-control {
             margin: 0 10px 0 0;
         }
+
+        &-others {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-gap: 10px;
+            margin-top: 20px;
+
+            &__control {
+                display: grid;
+                grid-template-columns: 1fr 5fr;
+                grid-gap: 5px;
+                & > label {
+                    margin-top: 6px;
+                }
+            }
+        }
     }
 }

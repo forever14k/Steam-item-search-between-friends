@@ -22,11 +22,11 @@ export function getInventoriesFiltersScheme(source: Observable<ParsedSteamInvent
                                         categoryName: tag.categoryName,
                                         items:        [],
                                     };
-                                    result.categories.push(category);
+                                    result.categories = [ ...result.categories, category ];
                                 }
                                 const item = category.items.find(existing => existing.name === tag.name);
                                 if (!item) {
-                                    category.items.push(tag);
+                                    category.items = [ ...category.items, tag ];
                                 }
                             }
                         }
