@@ -17,10 +17,8 @@ import {
 } from './persons-inventories/persons-inventories-iterator-result-factory';
 import { ParsedSteamInventory, parseInventories } from './persons-inventories/utils/parse-inventories-items';
 import { getInventoriesFiltersScheme } from './persons-inventories/utils/get-inventories-filters-scheme';
-import {
-    createItemsFilterFactory, defaultTagMatcherFactory,
-    filterInventories, ItemsFilterFactory, ParsedInventoriesFilters,
-} from './persons-inventories/utils/filter-inventories';
+import { filterInventories, ParsedInventoryItemsFilter } from './persons-inventories/utils/filter-inventories';
+import { createParsedInventoryItemsFilter } from './persons-inventories/utils/inventory-items-filter';
 
 
 @Component({
@@ -125,26 +123,20 @@ export class AppComponent implements OnDestroy {
         );
 
 
-        const filters: Observable<ParsedInventoriesFilters> = this._onSearch.pipe(
+        const filters: Observable<ParsedInventoryItemsFilter> = createParsedInventoryItemsFilter(this._onSearch.pipe(
             map(() => {
                 return {
                     ...this._filters.value ? this._filters.value : {},
-                    [SisCommonTags.KindEnum.Name]: this._name.value ? [ this._name.value ] : null,
+                    [SisCommonTags.KindEnum.Name]: (tag: SisTag) => {
+                        console.log(tag.categoryName, tag.name, this._name.value);
+                        return true;
+                    },
                 };
             }),
-        );
-        const filtersFactory: ItemsFilterFactory = createItemsFilterFactory({
-            tagMatcherFactory: (categoryName: SisTag['categoryName'], names: SisTag['name'][]) => {
-                if (categoryName === SisCommonTags.KindEnum.Name) {
-                    console.log(categoryName, names);
-                    return () => true;
-                }
-                return defaultTagMatcherFactory(categoryName, names);
-            },
-        });
+        ));
 
         this._inventoriesSubscription.add(
-            filterInventories(parsedInventories, filters, filtersFactory).subscribe(
+            filterInventories(parsedInventories, filters).subscribe(
                 filtered => this._filteredResults = filtered,
             ),
         );
