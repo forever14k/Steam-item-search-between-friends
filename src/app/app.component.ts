@@ -5,7 +5,7 @@ import { DOCUMENT } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import {
     SteamClient, IterationsResults, SteamPerson, MemoizedIterator, SisSettingsService,
-    SisSettings, SisTag, TagParsersManager, SisCommonTags,
+    SisSettings, SisTag, TagParsersManager, SisCommonTags, CommonNameSisTag,
 } from 'sis';
 
 import { SISBF_APP_L10N } from './app.l10n';
@@ -125,11 +125,11 @@ export class AppComponent implements OnDestroy {
 
         const filters: Observable<ParsedInventoryItemsFilter> = createParsedInventoryItemsFilter(this._onSearch.pipe(
             map(() => {
+                const name = (this._name.value as string || '').toLowerCase();
                 return {
                     ...this._filters.value ? this._filters.value : {},
-                    [SisCommonTags.KindEnum.Name]: (tag: SisTag) => {
-                        console.log(tag.categoryName, tag.name, this._name.value);
-                        return true;
+                    [SisCommonTags.KindEnum.Name]: (tag: CommonNameSisTag) => {
+                        return !name || (tag.name && tag.name.toLowerCase().includes(name));
                     },
                 };
             }),
