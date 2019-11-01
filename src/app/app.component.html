@@ -77,7 +77,7 @@
                         <sisbf-person [person]="filteredResult.person"></sisbf-person>
                         <div class="sisbf-app__results-results__items">
                             <ng-container *ngFor="let item of filteredResult.items; trackBy: trackParsedSteamInventoryItem">
-                                <sisbf-inventory-item [item]="item"></sisbf-inventory-item>
+                                <sisbf-inventory-item [item]="item" [excludeTags]="excludeTags"></sisbf-inventory-item>
                             </ng-container>
                         </div>
                     </ng-container>

@@ -1,4 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
+import { SisTag } from 'sis';
 
 import { ParsedSteamInventoryItem } from '../persons-inventories/utils/parse-inventories-items';
 import { SisCommonTags } from '../../../projects/sis/src/common-tags-support/common';
@@ -13,6 +14,7 @@ export class InventoryItemComponent implements OnChanges {
 
     @Input() item: ParsedSteamInventoryItem;
 
+    @Input() excludeTags: Set<SisTag['kind']>;
 
     private _imageUrl: string | null;
     private _color: string | null;

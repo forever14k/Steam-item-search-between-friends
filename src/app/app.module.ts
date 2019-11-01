@@ -5,6 +5,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { CookieService } from 'ngx-cookie-service';
+import { PopoverModule } from 'ngx-smart-popover';
 import {
     STEAM_CLIENT_CONFIG, SteamClient, SteamClientConfig, SteamPublicAPIExecutor, TagParsersManager,
     TAG_PARSERS_MANAGER_PLUGIN, CommonColorTagParserManagerPlugin, CommonNameTagParserManagerPlugin,
@@ -14,7 +16,6 @@ import {
 
 import { STEAM_MAX_RPM } from './app-config';
 import { AppComponent } from './app.component';
-import { CookieService } from 'ngx-cookie-service';
 import { PersonComponent } from './person/person.component';
 import { InventoryItemComponent } from './inventory/inventory-item.component';
 
@@ -28,7 +29,7 @@ import { InventoryItemComponent } from './inventory/inventory-item.component';
     imports: [
         BrowserModule, BrowserAnimationsModule, FormsModule, ReactiveFormsModule, HttpClientModule, CommonModule,
 
-        NgSelectModule,
+        NgSelectModule, PopoverModule,
     ],
     providers: [
         SisSettingsService,

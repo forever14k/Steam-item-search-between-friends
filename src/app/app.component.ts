@@ -36,6 +36,12 @@ export class AppComponent implements OnDestroy {
 
     readonly SISBF_APP_L10N = SISBF_APP_L10N;
 
+    private _excludeTags: Set<SisTag['kind']> = new Set([
+        SisCommonTags.KindEnum.Name,
+        SisCommonTags.KindEnum.Image,
+        SisCommonTags.KindEnum.Color,
+    ]);
+
 
     private _app: FormGroup = this._fb.group({
         appId:     this._fb.control('', Validators.required),
@@ -45,11 +51,6 @@ export class AppComponent implements OnDestroy {
     private _name: FormControl = this._fb.control('');
 
     private _filters: FormGroup = this._fb.group({});
-    private _excludeFilters: Set<SisTag['kind']> = new Set([
-        SisCommonTags.KindEnum.Name,
-        SisCommonTags.KindEnum.Image,
-        SisCommonTags.KindEnum.Color,
-    ]);
     private _filtersScheme: InventoriesFiltersScheme | null = null;
 
 
@@ -149,7 +150,7 @@ export class AppComponent implements OnDestroy {
             .pipe(takeUntil(unsubscribe))
             .subscribe(scheme => {
                 scheme = {
-                    categories: scheme.categories.filter(category => !this._excludeFilters.has(category.kind)),
+                    categories: scheme.categories.filter(category => !this._excludeTags.has(category.kind)),
                 };
                 this._filtersScheme = scheme;
                 for (const category of scheme.categories) {
@@ -169,6 +170,9 @@ export class AppComponent implements OnDestroy {
         (_, item) => getInventoryAssetId(item.asset)
 
 
+    get excludeTags(): Set<SisTag['kind']> {
+        return this._excludeTags;
+    }
     get filteredResults(): ParsedSteamInventory[] | null {
         return this._filteredResults;
     }

@@ -1,1 +1,20 @@
-<img [attr.src]="imageUrl" [style.border-color]="color">
+<img [attr.src]="imageUrl" [style.border-color]="color" [popover]="popover">
+
+<!-- TODO: switch to own implementation -->
+<popover-content #popover>
+    <ng-container *ngIf="item?.tags?.length">
+        <table>
+            <ng-container *ngFor="let tag of item.tags">
+                <ng-container *ngIf="!excludeTags?.has(tag.kind)">
+                    <tr>
+                        <!-- TODO: use css for ':' -->
+                        <td>{{ tag.categoryName }}:</td>
+                        <td>
+                            <span [style.color]="tag.color">{{ tag.name }}</span>
+                        </td>
+                    </tr>
+                </ng-container>
+            </ng-container>
+        </table>
+    </ng-container>
+</popover-content>

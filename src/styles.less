@@ -1,3 +1,39 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import "~@ng-select/ng-select/themes/default.theme.css";
+
+@popover-bg:             #3a3a3a;
+@popover-max-width:      500px;
+@popover-border-color:   #BFBFBF;
+@popover-title-bg:       darken(@popover-bg, 3%);
+@popover-zindex:         1060;
+@popover-border-radius:  3px;
+
+
+.popover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: @popover-zindex;
+    display: none;
+    max-width: @popover-max-width;
+    padding: 1px;
+
+    background-color: @popover-bg;
+    border: 1px solid @popover-border-color;
+    border-radius: @popover-border-radius;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+}
+
+.popover-title {
+    margin: 0; // reset heading margin
+    padding: 8px 14px;
+    background-color: @popover-title-bg;
+    border-bottom: 1px solid darken(@popover-title-bg, 5%);
+    border-radius: (@popover-border-radius - 1) (@popover-border-radius - 1) 0 0;
+}
+
+.popover-content {
+    padding: 9px 14px;
+}
+
