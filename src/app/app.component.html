@@ -18,9 +18,9 @@
             </div>
         </ng-container>
         <button class="btn_medium sisbf-app__app-control" [ngClass]="{
-                    'btn_green_white_innerfade': !active && !completed,
-                    'btn_blue_white_innerfade': active,
-                    'btn_darkblue_white_innerfade': !active && completed
+                    'btn_green_white_innerfade':    !active && !completed,
+                    'btn_blue_white_innerfade':      active && !completed,
+                    'btn_darkblue_white_innerfade': !active &&  completed
                 }"
                 (click)="onLoadInventories()">
             <!-- TODO: use ICU message format -->

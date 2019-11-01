@@ -180,7 +180,7 @@ export class AppComponent implements OnDestroy {
         return this._results;
     }
     get active(): boolean {
-        return !this._inventoriesSubscription.closed;
+        return !this.completed && !this._inventoriesSubscription.closed;
     }
     get completed(): boolean {
         return this._results && this._results.results.length === this._results.total;
