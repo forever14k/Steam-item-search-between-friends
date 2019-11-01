@@ -1,7 +1,7 @@
 import { EMPTY, forkJoin, Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import {
-    getInventoryEntityId, SteamInventoryAsset, SteamInventoryDescription, SisTag, SteamPerson, TagParsersManager,
+    getInventoryDescriptionId, SteamInventoryAsset, SteamInventoryDescription, SisTag, SteamPerson, TagParsersManager,
     IterationsResults,
 } from 'sis';
 
@@ -26,10 +26,10 @@ export function parseInventories(source: Observable<IterationsResults<SteamPerso
         }),
         switchMap(({ person, inventory }) => {
             if (inventory.assets && inventory.assets.length && inventory.descriptions && inventory.descriptions.length) {
-                const order = inventory.assets.map(asset => getInventoryEntityId(asset));
-                const assets = new Map(inventory.assets.map(asset => [ getInventoryEntityId(asset), asset ]));
+                const order = inventory.assets.map(asset => getInventoryDescriptionId(asset));
+                const assets = new Map(inventory.assets.map(asset => [ getInventoryDescriptionId(asset), asset ]));
                 const descriptions = new Map(inventory.descriptions.map(description =>
-                    [ getInventoryEntityId(description), description ],
+                    [ getInventoryDescriptionId(description), description ],
                 ));
                 return forkJoin(
                         order.map(id => {

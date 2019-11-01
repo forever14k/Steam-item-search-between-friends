@@ -15,11 +15,15 @@ import {
 import { STEAM_MAX_RPM } from './app-config';
 import { AppComponent } from './app.component';
 import { CookieService } from 'ngx-cookie-service';
+import { PersonComponent } from './person/person.component';
+import { InventoryItemComponent } from './inventory/inventory-item.component';
 
 
 @NgModule({
     declarations: [
         AppComponent,
+        PersonComponent,
+        InventoryItemComponent,
     ],
     imports: [
         BrowserModule, BrowserAnimationsModule, FormsModule, ReactiveFormsModule, HttpClientModule, CommonModule,

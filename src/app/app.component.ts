@@ -1,11 +1,11 @@
-import { Observable, Subject, Subscription, EMPTY, Unsubscribable } from 'rxjs';
+import { Observable, Subject, Subscription, EMPTY, Unsubscribable, concat, of } from 'rxjs';
 import { map, publishReplay, refCount, switchMap, takeUntil } from 'rxjs/operators';
-import { Component, HostBinding, Inject, OnDestroy } from '@angular/core';
+import { Component, HostBinding, Inject, OnDestroy, TrackByFunction } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import {
     SteamClient, IterationsResults, SteamPerson, MemoizedIterator, SisSettingsService,
-    SisSettings, SisTag, TagParsersManager, SisCommonTags, CommonNameSisTag,
+    SisSettings, SisTag, TagParsersManager, SisCommonTags, CommonNameSisTag, getInventoryAssetId,
 } from 'sis';
 
 import { SISBF_APP_L10N } from './app.l10n';
@@ -15,7 +15,9 @@ import { SteamPersonsIteratorDataSource } from './persons-inventories/persons-it
 import {
     PersonInventoryResult, createSteamPersonInventoryResultFactory,
 } from './persons-inventories/persons-inventories-iterator-result-factory';
-import { ParsedSteamInventory, parseInventories } from './persons-inventories/utils/parse-inventories-items';
+import {
+    ParsedSteamInventory, ParsedSteamInventoryItem, parseInventories
+} from './persons-inventories/utils/parse-inventories-items';
 import {
     getInventoriesFiltersScheme, InventoriesFiltersScheme,
 } from './persons-inventories/utils/get-inventories-filters-scheme';
@@ -75,31 +77,37 @@ export class AppComponent implements OnDestroy {
             this._app.valueChanges.subscribe(
                 (settings: SisSettings | null) => {
                     this._settings.setSettings(settings);
-                    this.resetInventoriesLoading();
+                    this._inventoriesSubscription.unsubscribe();
+                    this._results = null;
+                    this._iterator = null;
+                    this._name = this._fb.control('');
+                    this._filters = this._fb.group({});
+                    this._filtersScheme = null;
+                    this._filteredResults = null;
                 },
             ),
 
-            filterInventories(
-                    this._parsedInventories.pipe(
-                        switchMap(parsedInventories => parsedInventories || EMPTY),
-                    ),
-                    createParsedInventoryItemsFilter(this._onSearch.pipe(
-                        map(() => {
-                            const name = (this._name.value as string || '').toLowerCase();
-                            return {
-                                ...this._filters.value ? this._filters.value : {},
-                                [SisCommonTags.KindEnum.Name]: (tag: CommonNameSisTag) => {
-                                    return !name || (tag.name && tag.name.toLowerCase().includes(name));
-                                },
-                            };
-                        }),
+            concat(of(null), this._app.valueChanges)
+                .pipe(
+                    switchMap(() => filterInventories(
+                        this._parsedInventories.pipe(
+                            switchMap(parsedInventories => parsedInventories || EMPTY),
+                        ),
+                        createParsedInventoryItemsFilter(this._onSearch.pipe(
+                            map(() => {
+                                const name = (this._name.value as string || '').toLowerCase();
+                                return {
+                                    ...this._filters.value ? this._filters.value : {},
+                                    [SisCommonTags.KindEnum.Name]: (tag: CommonNameSisTag) => {
+                                        return !name || (tag.name && tag.name.toLowerCase().includes(name));
+                                    },
+                                };
+                            }),
+                        )),
                     )),
                 )
                 .subscribe(
-                    filtered => {
-                        this._filteredResults = filtered;
-                        console.log(filtered);
-                    },
+                    filtered => this._filteredResults = filtered,
                 ),
         ];
     }
@@ -155,14 +163,10 @@ export class AppComponent implements OnDestroy {
     }
 
 
-    private resetInventoriesLoading() {
-        this._inventoriesSubscription.unsubscribe();
-        this._results = null;
-        this._iterator = null;
-        this._filters = this._fb.group({});
-        this._name = this._fb.control('');
-        this._filtersScheme = null;
-    }
+    trackParsedSteamInventory: TrackByFunction<ParsedSteamInventory> =
+        (_, inventory) => (inventory.person.id64)
+    trackParsedSteamInventoryItem: TrackByFunction<ParsedSteamInventoryItem> =
+        (_, item) => getInventoryAssetId(item.asset)
 
 
     get filteredResults(): ParsedSteamInventory[] | null {
