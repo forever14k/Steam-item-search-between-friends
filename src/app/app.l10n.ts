@@ -37,4 +37,8 @@ export const SISBF_APP_L10N = {
         },
     },
 
+    results: {
+        sectionName: 'Results',
+    },
+
 };

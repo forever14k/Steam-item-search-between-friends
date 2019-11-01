@@ -18,9 +18,9 @@
             </div>
         </ng-container>
         <button class="btn_medium sisbf-app__app-control" [ngClass]="{
-                    'btn_green_white_innerfade': !this.active && (!results || results.total > results.results.length),
-                    'btn_blue_white_innerfade': this.active,
-                    'btn_darkblue_white_innerfade': !this.active && results && results.results.length >= results.total
+                    'btn_green_white_innerfade': !active && !completed,
+                    'btn_blue_white_innerfade': active,
+                    'btn_darkblue_white_innerfade': !active && completed
                 }"
                 (click)="onLoadInventories()">
             <!-- TODO: use ICU message format -->
@@ -35,7 +35,7 @@
     </div>
 
 
-    <ng-container *ngIf="results?.results?.length">
+    <ng-container *ngIf="filtersScheme?.categories?.length">
         <div class="sisbf-app__filters">
             <div class="state_block" style="">{{ SISBF_APP_L10N.filters.sectionName }}</div>
             <div class="sisbf-app__filters-name">
@@ -48,24 +48,49 @@
                 </span>
                 </button>
             </div>
-            <ng-container *ngIf="filtersScheme?.categories?.length">
-                <ng-container [formGroup]="filters">
-                    <div class="sisbf-app__filters-others">
-                        <ng-container *ngFor="let category of filtersScheme.categories">
-                            <div class="sisbf-app__filters-others__control">
-                                <label>{{ category.categoryName }}</label>
-                                <ng-select
-                                    [items]="category?.items || []"
-                                    [multiple]="true"
-                                    [searchable]="true"
-                                    bindLabel="name" bindValue="name"
-                                    [formControlName]="category.categoryName">
-                                </ng-select>
-                            </div>
-                        </ng-container>
-                    </div>
-                </ng-container>
+
+            <ng-container [formGroup]="filters">
+                <div class="sisbf-app__filters-others">
+                    <ng-container *ngFor="let category of filtersScheme.categories">
+                        <!-- TODO: separate component? -->
+                        <!-- TODO: use css for ':' -->
+                        <label>{{ category.categoryName }}:</label>
+                        <ng-select
+                            [items]="category?.items || []"
+                            [multiple]="true"
+                            [searchable]="true"
+                            bindLabel="name" bindValue="name"
+                            [formControlName]="category.categoryName">
+                            <!-- TODO: templates -->
+                        </ng-select>
+                    </ng-container>
+                </div>
             </ng-container>
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="filteredResults?.length">
+        <div class="sisbf-app__results">
+            <div class="state_block" style="">{{ SISBF_APP_L10N.results.sectionName }}</div>
+            <div class="sisbf-app__results-results">
+                <ng-container *ngFor="let filteredResult of filteredResults">
+                    <ng-container *ngIf="filteredResult?.items?.length">
+                        <div class="friend_block_v2 persona in-game">
+                            <div class="player_avatar friend_block_link_overlay in-game">
+                                <img [attr.src]="filteredResult.person.avatarUrl">
+                            </div>
+                            <div class="friend_block_content">
+                                <span>{{ filteredResult.person.name }}</span>
+                            </div>
+                        </div>
+                        <div>
+                            <ng-container *ngFor="let item of filteredResult.items">
+                                <img [attr.src]="'//steamcommunity-a.akamaihd.net/economy/image/' + item.description.icon_url +'/73fx49f'" [style.border-color]="'red'">
+                            </ng-container>
+                        </div>
+                    </ng-container>
+                </ng-container>
+            </div>
         </div>
     </ng-container>
 </div>

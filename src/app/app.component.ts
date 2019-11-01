@@ -1,5 +1,5 @@
-import { Observable, Subject, Subscription } from 'rxjs';
-import { map, publishReplay, refCount } from 'rxjs/operators';
+import { Observable, Subject, Subscription, EMPTY, Unsubscribable } from 'rxjs';
+import { map, publishReplay, refCount, switchMap, takeUntil } from 'rxjs/operators';
 import { Component, HostBinding, Inject, OnDestroy } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -19,7 +19,7 @@ import { ParsedSteamInventory, parseInventories } from './persons-inventories/ut
 import {
     getInventoriesFiltersScheme, InventoriesFiltersScheme,
 } from './persons-inventories/utils/get-inventories-filters-scheme';
-import { filterInventories, ParsedInventoryItemsFilter } from './persons-inventories/utils/filter-inventories';
+import { filterInventories } from './persons-inventories/utils/filter-inventories';
 import { createParsedInventoryItemsFilter } from './persons-inventories/utils/inventory-items-filter';
 
 
@@ -51,11 +51,12 @@ export class AppComponent implements OnDestroy {
     private _filtersScheme: InventoriesFiltersScheme | null = null;
 
 
-    private _settingsSubscription: Subscription = Subscription.EMPTY;
+    private _unsubscribeOnDestroy: Unsubscribable[] = [];
     private _inventoriesSubscription: Subscription = Subscription.EMPTY;
     private _dataSource: SteamPersonsIteratorDataSource = new SteamPersonsIteratorDataSource(this._document);
     private _onSearch: Subject<void> = new Subject();
-    private _inventoryItemsFilter: Observable<ParsedInventoryItemsFilter>;
+
+    private _parsedInventories: Subject<Observable<ParsedSteamInventory> | null> = new Subject();
 
     private _iterator: MemoizedIterator<SteamPerson, PersonInventoryResult> | null = null;
     private _results: IterationsResults<SteamPerson, PersonInventoryResult> | null = null;
@@ -66,35 +67,41 @@ export class AppComponent implements OnDestroy {
                 private _settings: SisSettingsService, private _tagParser: TagParsersManager,
                 @Inject(DOCUMENT) private _document: Document) {
 
-        this._settingsSubscription = this._settings.getSettings().subscribe(
-            (settings: SisSettings | null) => this._app.setValue(settings || {}, { emitEvent: false }),
-        );
+        this._unsubscribeOnDestroy = [
+            this._settings.getSettings().subscribe(
+                (settings: SisSettings | null) => this._app.setValue(settings || {}, { emitEvent: false }),
+            ),
 
-        this._settingsSubscription.add(
             this._app.valueChanges.subscribe(
                 (settings: SisSettings | null) => {
                     this._settings.setSettings(settings);
-                    this._inventoriesSubscription.unsubscribe();
-                    this._results = null;
-                    this._iterator = null;
-                    this._filters = this._fb.group({});
-                    this._name = this._fb.control('');
-                    this._filtersScheme = null;
+                    this.resetInventoriesLoading();
                 },
             ),
-        );
 
-        this._inventoryItemsFilter = createParsedInventoryItemsFilter(this._onSearch.pipe(
-            map(() => {
-                const name = (this._name.value as string || '').toLowerCase();
-                return {
-                    ...this._filters.value ? this._filters.value : {},
-                    [SisCommonTags.KindEnum.Name]: (tag: CommonNameSisTag) => {
-                        return !name || (tag.name && tag.name.toLowerCase().includes(name));
+            filterInventories(
+                    this._parsedInventories.pipe(
+                        switchMap(parsedInventories => parsedInventories || EMPTY),
+                    ),
+                    createParsedInventoryItemsFilter(this._onSearch.pipe(
+                        map(() => {
+                            const name = (this._name.value as string || '').toLowerCase();
+                            return {
+                                ...this._filters.value ? this._filters.value : {},
+                                [SisCommonTags.KindEnum.Name]: (tag: CommonNameSisTag) => {
+                                    return !name || (tag.name && tag.name.toLowerCase().includes(name));
+                                },
+                            };
+                        }),
+                    )),
+                )
+                .subscribe(
+                    filtered => {
+                        this._filteredResults = filtered;
+                        console.log(filtered);
                     },
-                };
-            }),
-        ));
+                ),
+        ];
     }
 
 
@@ -103,7 +110,7 @@ export class AppComponent implements OnDestroy {
     }
 
     onLoadInventories() {
-        if (this._results && this._results.results.length === this._results.total) {
+        if (this.completed) {
             return;
         }
 
@@ -122,14 +129,17 @@ export class AppComponent implements OnDestroy {
         );
         const parsedInventories = parseInventories(results, this._tagParser);
 
-        this._inventoriesSubscription = new Subscription();
+        const unsubscribe = new Subject();
+        this._inventoriesSubscription = new Subscription(() => unsubscribe.next());
 
-        this._inventoriesSubscription.add(
-            results.subscribe(result => this._results = result),
-        );
+        results
+            .pipe(takeUntil(unsubscribe))
+            .subscribe(result => this._results = result);
 
-        this._inventoriesSubscription.add(
-            getInventoriesFiltersScheme(parsedInventories).subscribe(scheme => {
+
+        getInventoriesFiltersScheme(parsedInventories)
+            .pipe(takeUntil(unsubscribe))
+            .subscribe(scheme => {
                 scheme = {
                     categories: scheme.categories.filter(category => !this._excludeFilters.has(category.kind)),
                 };
@@ -139,14 +149,19 @@ export class AppComponent implements OnDestroy {
                         this._filters.registerControl(category.categoryName, this._fb.control(null));
                     }
                 }
-            }),
-        );
+            });
 
-        this._inventoriesSubscription.add(
-            filterInventories(parsedInventories, this._inventoryItemsFilter).subscribe(
-                filtered => this._filteredResults = filtered,
-            ),
-        );
+        this._parsedInventories.next(parsedInventories.pipe(takeUntil(unsubscribe)));
+    }
+
+
+    private resetInventoriesLoading() {
+        this._inventoriesSubscription.unsubscribe();
+        this._results = null;
+        this._iterator = null;
+        this._filters = this._fb.group({});
+        this._name = this._fb.control('');
+        this._filtersScheme = null;
     }
 
 
@@ -158,6 +173,9 @@ export class AppComponent implements OnDestroy {
     }
     get active(): boolean {
         return !this._inventoriesSubscription.closed;
+    }
+    get completed(): boolean {
+        return this._results && this._results.results.length === this._results.total;
     }
     get filtersScheme(): InventoriesFiltersScheme | null {
         return this._filtersScheme;
@@ -174,8 +192,8 @@ export class AppComponent implements OnDestroy {
 
 
     ngOnDestroy() {
-        this._settingsSubscription.unsubscribe();
         this._inventoriesSubscription.unsubscribe();
+        this._unsubscribeOnDestroy.reverse().forEach(subscription => subscription.unsubscribe());
     }
 
 }
